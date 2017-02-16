@@ -22,10 +22,6 @@ class Buyers(models.Model):
 	user_id = models.CharField(max_length=30)
 
 class Sellers(models.Model):
-	id = models.CharField(max_length=30, primary_key=True)
-	user_id = models.CharField(max_length=30)
-
-class Sellers(models.Model):
 	user_id = models.CharField(max_length=30)
 	day_avail = models.CharField(max_length=30)
 	time_avail = models.CharField(max_length=30)

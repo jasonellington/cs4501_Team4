@@ -6,4 +6,4 @@ models:
       - ./:/app
     ports:
       - "8001:8000"
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata db.json && mod_wsgi-express start-server --working-directory ./ --reload-on-changes ./project2/wsgi.py && docker run -it --name web -p 8000:8000 --link mysql:db -v ~/cs4501_Team4/myapp:/myapp tp33/django"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata db.json && mod_wsgi-express start-server --working-directory ./ --reload-on-changes ./project2/wsgi.py && docker run -it --name web -p 8001:8000 --link mysql:db -v ~/cs4501_Team4/myapp:/myapp tp33/django"

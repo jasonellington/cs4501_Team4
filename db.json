@@ -5,9 +5,9 @@
     "fields": {
       "first_name": "Ali",
       "last_name": "Peltz",
-	"user_name": "abp5fn",
-	"age": "21",
-	"rating": "5"
+    	"user_name": "abp5fn",
+    	"age": "21",
+      "rating": "5"
     }
   },
   {
@@ -16,42 +16,39 @@
     "fields": {
       "first_name": "Apple",
       "last_name": "Sauce",
-	 "user_name": "asb123",
-	"age": "21",
-	"rating": "5"
+    	"user_name": "asb123",
+    	"age": "21",
+    	"rating": "5"
     }
   },
   {
-"model": "myapp.car",
-"pk": 3,
-"fields": {
-"make": "Honda",
-"car_model": "Pilot",
-"year": "2004",
-"color": "blue",
-"body_type": "SUV",
-"num_seats": "5"
-
-}
-},
-{
-"model": "myapp.buyers",
-"pk": 4,
-"fields": {
-"user_id": "abp5fn"
-}
-},
-{
-"model": "myapp.sellers",
-"pk": 5,
-"fields": {
-"user_id": "abp5fn",
-"day_avail": "Feb 15, 2017",
-"time_avail": "12 pm",
-"day_due": "Feb 16, 2017",
-"time_due": "5 pm"
-}
-}
-
-
+    "model": "myapp.car",
+    "pk": 3,
+    "fields": {
+      "make": "Honda",
+      "car_model": "Pilot",
+      "year": "2004",
+      "color": "blue",
+      "body_type": "SUV",
+      "num_seats": "5"
+    }
+  },
+  {
+    "model": "myapp.buyers",
+    "pk": 4,
+    "fields": {
+      "user_id": "abp5fn"
+    }
+  },
+  {
+    "model": "myapp.sellers",
+    "pk": 5,
+    "fields": {
+      "user_id": "abp5fn",
+      "day_avail": "Feb 15, 2017",
+      "time_avail": "12 pm",
+      "day_due": "Feb 16, 2017",
+      "time_due": "5 pm"
+    }
+  }
 ]

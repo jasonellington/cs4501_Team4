@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import User, Car, Buyers, Sellers
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -22,42 +23,138 @@ def get_users(request):
 def get_user(request, user_id):
 	if request.method == 'GET':
 		try:
-			u = User.objects.get(id=user_id)
+			user = User.objects.get(id=user_id)
 			return JsonResponse({'ok': True, 'result': {'id': user_id, 'first_name': user.first_name, 'last_name': user.last_name, 'user_name': user.user_name, 'age': user.age, 'rating': user.rating}})
 		
 		except ObjectDoesNotExist:
 			return JsonResponse({'ok': False, 'result': 'user does not exist', 'id': user_id})
 
-# def create_user(request):
-# 	if request.method == 'POST':
-# 		form = UserForm(request.POST)
-# 		form.setChoices(request)
-# 		if form.is_valid():
-# 			# create a user object
-# 			first_name = request.POST.get('first_name')
-# 			last_name = request.POST.get('last_name')
-# 			user_name = request.POST.get('user_name')
-# 			age = request.POST.get('age')
-# 			rating = request.POST.get('rating')
+@csrf_exempt
+def update_user(request, id):
+	if request.method == 'POST':
+		try:
+			user = User.objects.get(id=id)
+			if request.POST.get('first_name'):
+				user.first_name = request.POST.get('first_name')
+			if request.POST.get('last_name'):
+				user.last_name = request.POST.get('last_name')
+			if request.POST.get('user_name'):
+				user.user_name = request.POST.get('user_name')
+			if request.POST.get('age'):
+				user.age = request.POST.get('age')
+			if request.POST.get('rating'):
+				user.rating = request.POST.get('rating')
 
-# 			try:
-# 				u = User.objects.get(user_name=user_name)
-# 				# A user with that user_name already exists - send the form back to user with an error
-# 				form = UserForm(request.POST)
-# 				form.add_error('user_name', "A user with that username already exists: please try a different username")
-				
-# 				return render(request, 'myapp/createUser.html', {'form': form})
+			user.save()
+			results = {'first_name': user.first_name, 'last_name': user.last_name, 'user_name': user.user_name, 'age': user.age, 'rating': user.rating}
 
-# 			except ObjectDoesNotExist:
-# 				user_obj = User(first_name=first_name, last_name=last_name, user_name=user_name, age=age, rating=rating)
-# 				user_obj.save()
+			return JsonResponse({'ok': True, 'result': results})
 
-# 				#return render(request, 'myapp/userCreated.html', {'ok': True, 'result': {'first_name': first_name, 'last_name': last_name, 'user_name': user_name,'age': age, 'rating': rating}})
-# 				return JsonResponse({'ok': True, 'result': {'first_name': first_name, 'last_name': last_name, 'user_name': user_name, 'age': age, 'rating': rating}})
-# 	else:
-# 		form = UserForm()
-# 		form.setChoices(request)
-# 	return render(request, 'myapp/createUser.html', {'form': form})
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'no user exists with that id'})
+
+@csrf_exempt
+def create_user(request):
+	if request.method == 'POST':
+		if request.POST.get('first_name'):
+			first_name = request.POST.get('first_name')
+		if request.POST.get('last_name'):
+			last_name = request.POST.get('last_name')
+		if request.POST.get('user_name'):
+			user_name = request.POST.get('user_name')
+		if request.POST.get('age'):
+			age = request.POST.get('age')
+		if request.POST.get('rating'):
+			rating = request.POST.get('rating')
+
+		try:
+			u = User.objects.get(user_name=user_name)
+			return JsonResponse({'ok': False, 'result': 'user_name already in use'})
+
+		except ObjectDoesNotExist:
+			user = User(first_name=first_name, last_name=last_name, user_name=user_name, age=age, rating=rating)
+			result = user.save()
+
+			results = {'first_name': user.first_name, 'last_name': user.last_name, 'user_name': user.user_name, 'age': user.age, 'rating': user.rating}
+
+			return JsonResponse({'ok': True, 'result': results, 'result2': result})
+
+def get_cars(request):
+	if request.method == 'GET':
+		results = {}
+
+		for car in Car.objects.all():
+			results[car.id] = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
+
+		response = {'ok': True, 'result': results}
+
+		return JsonResponse(response)
+
+def get_car(request, car_id):
+	if request.method == 'GET':
+		try:
+			car = Car.objects.get(id=car_id)
+			return JsonResponse({'ok': True, 'result': {'id': car_id, 'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}})
+		
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'car does not exist', 'id': car_id})
+
+@csrf_exempt
+def update_car(request, id):
+	if request.method == 'POST':
+		try:
+			car = Car.objects.get(id=id)
+			if request.POST.get('make'):
+				car.make = request.POST.get('make')
+			if request.POST.get('car_model'):
+				car.car_model = request.POST.get('car_model')
+			if request.POST.get('year'):
+				car.year = request.POST.get('year')
+			if request.POST.get('color'):
+				car.color = request.POST.get('color')
+			if request.POST.get('body_type'):
+				car.body_type = request.POST.get('body_type')
+			if request.POST.get('num_seats'):
+				car.num_seats = request.POST.get('num_seats')
+
+			car.save()
+			results = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
+
+			return JsonResponse({'ok': True, 'result': results})
+
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'no car exists with that id'})
+
+@csrf_exempt
+def create_car(request):
+	if request.method == 'POST':
+		if request.POST.get('make'):
+			make = request.POST.get('make')
+		if request.POST.get('car_model'):
+			car_model = request.POST.get('car_model')
+		if request.POST.get('year'):
+			year = request.POST.get('year')
+		if request.POST.get('color'):
+			color = request.POST.get('color')
+		if request.POST.get('body_type'):
+			body_type = request.POST.get('body_type')
+		if request.POST.get('num_seats'):
+			num_seats = request.POST.get('num_seats')
+
+		car = Car(make=make, car_model=car_model, year=year, color=color, body_type=body_type, num_seats=num_seats)
+		car.save()
+
+		results = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
+
+		return JsonResponse({'ok': True, 'result': results})
+
+
+
+
+
+
+
+
 
 
 
