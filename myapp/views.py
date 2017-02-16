@@ -82,6 +82,15 @@ def create_user(request):
 
 			return JsonResponse({'ok': True, 'result': results, 'result2': result})
 
+@csrf_exempt
+def delete_user(request, id):
+	if request.method == 'DELETE':
+		user = User.objects.get(id=id)
+		user.delete()
+
+		return JsonResponse({'ok': True, 'id': id, 'result': 'user deleted'})
+
+
 def get_cars(request):
 	if request.method == 'GET':
 		results = {}
@@ -152,6 +161,14 @@ def create_car(request):
 		results = {'id': car.id, 'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
 
 		return JsonResponse({'ok': True, 'result': results})
+
+@csrf_exempt
+def delete_car(request, id):
+	if request.method == 'DELETE':
+		car = Car.objects.get(id=id)
+		car.delete()
+
+		return JsonResponse({'ok': True, 'id': id, 'result': 'car deleted'})
 
 
 
