@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 def home_page(request):
 	return JsonResponse({'ok': True, 'result': {}})
 
+
 def get_users(request):
 	if request.method == 'GET':
 		results = {}
@@ -56,6 +57,8 @@ def update_user(request, id):
 @csrf_exempt
 def create_user(request):
 	if request.method == 'POST':
+		if request.POST.get('id'):
+			id = request.POST.get('id')
 		if request.POST.get('first_name'):
 			first_name = request.POST.get('first_name')
 		if request.POST.get('last_name'):
@@ -72,10 +75,10 @@ def create_user(request):
 			return JsonResponse({'ok': False, 'result': 'user_name already in use'})
 
 		except ObjectDoesNotExist:
-			user = User(first_name=first_name, last_name=last_name, user_name=user_name, age=age, rating=rating)
+			user = User(id=id, first_name=first_name, last_name=last_name, user_name=user_name, age=age, rating=rating)
 			result = user.save()
 
-			results = {'first_name': user.first_name, 'last_name': user.last_name, 'user_name': user.user_name, 'age': user.age, 'rating': user.rating}
+			results = {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'user_name': user.user_name, 'age': user.age, 'rating': user.rating}
 
 			return JsonResponse({'ok': True, 'result': results, 'result2': result})
 
@@ -128,6 +131,8 @@ def update_car(request, id):
 @csrf_exempt
 def create_car(request):
 	if request.method == 'POST':
+		if request.POST.get('id'):
+			id = request.POST.get('id')
 		if request.POST.get('make'):
 			make = request.POST.get('make')
 		if request.POST.get('car_model'):
@@ -141,10 +146,10 @@ def create_car(request):
 		if request.POST.get('num_seats'):
 			num_seats = request.POST.get('num_seats')
 
-		car = Car(make=make, car_model=car_model, year=year, color=color, body_type=body_type, num_seats=num_seats)
+		car = Car(id=id, make=make, car_model=car_model, year=year, color=color, body_type=body_type, num_seats=num_seats)
 		car.save()
 
-		results = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
+		results = {'id': car.id, 'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
 
 		return JsonResponse({'ok': True, 'result': results})
 
