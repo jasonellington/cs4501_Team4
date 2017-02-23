@@ -1,13 +1,14 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from .models import User, Car, Buyers, Sellers
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, render_to_response
+from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 
 def home_page(request):
-	return JsonResponse({'ok': True, 'result': {}})
+	return render(request, 'myapp/homePage.html')
 
 
 def get_users(request):
