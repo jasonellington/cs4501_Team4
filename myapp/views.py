@@ -10,6 +10,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 def home_page(request):
 	return render(request, 'myapp/homePage.html')
 
+def details(request):
+	return render(request, 'myapp/details.html')
+
 
 def get_users(request):
 	if request.method == 'GET':
