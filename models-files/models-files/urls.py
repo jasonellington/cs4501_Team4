@@ -1,7 +1,9 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
+from django.contrib import admin
 from . import views
 
 urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^api/v1/home$', views.home_page, name='home_page'),
     url(r'^api/v1/details$', views.details, name='details'),
     url(r'^api/v1/users$', views.get_users, name='get_users'),

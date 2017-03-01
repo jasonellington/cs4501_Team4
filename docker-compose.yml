@@ -1,9 +1,30 @@
 models:
-    image: tp33/django
-    external_links:
-      -  mysql:db
-    volumes:
-      - ./:/app
-    ports:
+   image: tp33/django
+   external_links:
+      - mysql:db
+   ports:
       - "8001:8000"
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata db.json && mod_wsgi-express start-server --url-alias /static static --working-directory ./ --reload-on-changes ./project2/wsgi.py && docker run -it --name web -p 8001:8000 --link mysql:db -v ~/cs4501_Team4/myapp:/myapp tp33/django"
+   volumes:
+      - ./models-files/:/app
+   command: bash -c "python manage.py makemigrations models-files && python manage.py migrate && python manage.py loaddata db.json && mod_wsgi-express start-server --reload-on-changes models-files/wsgi.py && docker run -it --name web -p 8001:8000 --link mysql:db -v ~/cs4501_Team4/models-files:/models tp33/django"
+
+
+exp:
+   image: tp33/django
+   links:
+      - models:models-api
+   ports:
+      - "8002:8000"
+   volumes:
+      - ./exp/:/app
+   command: "mod_wsgi-express start-server --reload-on-changes exp/wsgi.py"
+
+web:
+   image: tp33/django
+   links:
+      - exp:exp-api
+   ports:
+      - "8003:8000"
+   volumes:
+      - ./web/:/app
+   command: "mod_wsgi-express start-server --reload-on-changes web/wsgi.py"

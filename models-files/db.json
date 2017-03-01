@@ -1,28 +1,28 @@
 [
   { 
-    "model": "myapp.user",
+    "model": "models-files.user",
     "pk": 1,
     "fields": {
       "first_name": "Ali",
       "last_name": "Peltz",
-    	"user_name": "abp5fn",
-    	"age": "21",
+      "user_name": "abp5fn",
+      "age": "21",
       "rating": "5"
     }
   },
   {
-    "model": "myapp.user",
+    "model": "models-files.user",
     "pk": 2,
     "fields": {
       "first_name": "Apple",
       "last_name": "Sauce",
-    	"user_name": "asb123",
-    	"age": "21",
-    	"rating": "5"
+      "user_name": "asb123",
+      "age": "21",
+      "rating": "5"
     }
   },
   {
-    "model": "myapp.car",
+    "model": "models-files.car",
     "pk": 3,
     "fields": {
       "make": "Honda",
@@ -34,14 +34,14 @@
     }
   },
   {
-    "model": "myapp.buyers",
+    "model": "models-files.buyers",
     "pk": 4,
     "fields": {
       "user_id": "abp5fn"
     }
   },
   {
-    "model": "myapp.sellers",
+    "model": "models-files.sellers",
     "pk": 5,
     "fields": {
       "user_id": "abp5fn",

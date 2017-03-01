@@ -8,10 +8,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
 def home_page(request):
-	return render(request, 'myapp/homePage.html')
+	return render(request, 'web/homePage.html')
 
 def details(request):
-	return render(request, 'myapp/details.html')
+	return render(request, 'web/details.html')
 
 
 def get_users(request):
