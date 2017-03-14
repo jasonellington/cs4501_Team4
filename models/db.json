@@ -1,6 +1,6 @@
 [
   { 
-    "model": "models-files.user",
+    "model": "models.user",
     "pk": 1,
     "fields": {
       "first_name": "Ali",
@@ -11,7 +11,7 @@
     }
   },
   {
-    "model": "models-files.user",
+    "model": "models.user",
     "pk": 2,
     "fields": {
       "first_name": "Apple",
@@ -22,7 +22,7 @@
     }
   },
   {
-    "model": "models-files.car",
+    "model": "models.car",
     "pk": 3,
     "fields": {
       "make": "Honda",
@@ -34,14 +34,14 @@
     }
   },
   {
-    "model": "models-files.buyers",
+    "model": "models.buyers",
     "pk": 4,
     "fields": {
       "user_id": "abp5fn"
     }
   },
   {
-    "model": "models-files.sellers",
+    "model": "models.sellers",
     "pk": 5,
     "fields": {
       "user_id": "abp5fn",
