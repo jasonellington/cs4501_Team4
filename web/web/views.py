@@ -10,10 +10,11 @@ import requests
 
 def home_page(request):
 	r = requests.get('http://exp-api:8000/exp/all/cars')
+	j = r.json()
 	# if r.status_code != 200:
 	# 	return JsonResponse({'ok': False, 'result': 'get request failed'})
 
-	return render(request, 'web/homePage.html', {'cars': r})
+	return render(request, 'web/homePage.html', {'cars':j})
 
 def details(request):
 	return render(request, 'web/details.html')
