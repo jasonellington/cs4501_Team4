@@ -4,14 +4,22 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+import requests
 
 # Create your views here.
 
 def home_page(request):
+	# if r.status_code != 200:
+	# 	return JsonResponse({'ok': False, 'result': 'get request failed'})
+
 	return render(request, 'web/homePage.html')
 
 def details(request):
-	return render(request, 'web/details.html')
+	r = requests.get('http://exp-api:8000/exp/all/cars')
+	j = r.json()
+	return render(request, 'web/details.html', {'cars': j})
+
+
 
 
 # def get_users(request):
