@@ -34,6 +34,30 @@
     }
   },
   {
+    "model": "models.car",
+    "pk": 6,
+    "fields": {
+      "make": "Nissan",
+      "car_model": "Altima",
+      "year": "2017",
+      "color": "blue",
+      "body_type": "Sedan",
+      "num_seats": "5"
+    }
+  },
+    {
+    "model": "models.car",
+    "pk": 7,
+    "fields": {
+      "make": "Nissan",
+      "car_model": "Sentra",
+      "year": "2014",
+      "color": "gray",
+      "body_type": "Sedan",
+      "num_seats": "5"
+    }
+  },
+  {
     "model": "models.buyers",
     "pk": 4,
     "fields": {
