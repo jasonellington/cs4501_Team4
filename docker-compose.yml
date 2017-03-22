@@ -6,7 +6,7 @@ models:
       - "8001:8000"
    volumes:
       - ./models/:/app
-   command: bash -c "python manage.py makemigrations models && python manage.py migrate && python manage.py loaddata db.json && mod_wsgi-express start-server --reload-on-changes models/wsgi.py && docker run -it --name web -p 8001:8000 --link mysql:db -v ~/cs4501_Team4/models:/models tp33/django"
+   command: bash -c "python ./manage.py makemigrations models && python ./manage.py migrate && python ./manage.py loaddata db.json && mod_wsgi-express start-server --reload-on-changes ./models/wsgi.py && docker run -it --name web -p 8001:8000"
 
 exp:
    image: tp33/django
@@ -16,7 +16,7 @@ exp:
       - "8002:8000"
    volumes:
       - ./exp/:/app
-   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes exp/wsgi.py"
+   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes ./exp/wsgi.py"
 
 web:
    image: tp33/django
@@ -26,4 +26,4 @@ web:
       - "8003:8000"
    volumes:
       - ./web/:/app
-   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes web/wsgi.py"
+   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes ./web/wsgi.py"

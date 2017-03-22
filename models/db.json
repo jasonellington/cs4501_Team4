@@ -1,26 +1,4 @@
 [
-  { 
-    "model": "models.user",
-    "pk": 1,
-    "fields": {
-      "first_name": "Ali",
-      "last_name": "Peltz",
-      "user_name": "abp5fn",
-      "age": "21",
-      "rating": "5"
-    }
-  },
-  {
-    "model": "models.user",
-    "pk": 2,
-    "fields": {
-      "first_name": "Apple",
-      "last_name": "Sauce",
-      "user_name": "asb123",
-      "age": "21",
-      "rating": "5"
-    }
-  },
   {
     "model": "models.car",
     "pk": 3,
@@ -30,7 +8,30 @@
       "year": "2004",
       "color": "blue",
       "body_type": "SUV",
-      "num_seats": "5"
+      "num_seats": "5",
+      "date_created": "1490142212"
+    }
+  },
+  { 
+    "model": "models.user",
+    "fields": {
+      "first_name": "Ali",
+      "last_name": "Peltz",
+      "password": "dogs",
+      "user_id": "abp5fn",
+      "age": "21",
+      "rating": "5"
+    }
+  },
+  {
+    "model": "models.user",
+    "fields": {
+      "first_name": "Jason",
+      "last_name": "Ellington",
+      "user_id": "jte4hm",
+      "password": "turtles",
+      "age": "21",
+      "rating": "5"
     }
   },
   {
@@ -42,7 +43,8 @@
       "year": "2017",
       "color": "blue",
       "body_type": "Sedan",
-      "num_seats": "5"
+      "num_seats": "5",
+      "date_created": "1490142212"
     }
   },
     {
@@ -54,7 +56,8 @@
       "year": "2014",
       "color": "gray",
       "body_type": "Sedan",
-      "num_seats": "5"
+      "num_seats": "5",
+      "date_created" : "1490142212"
     }
   },
   {
@@ -69,10 +72,10 @@
     "pk": 5,
     "fields": {
       "user_id": "abp5fn",
-      "day_avail": "Feb 15, 2017",
-      "time_avail": "12 pm",
-      "day_due": "Feb 16, 2017",
-      "time_due": "5 pm"
+      "day_avail": "1490141393",
+      "time_avail": "1490141399",
+      "day_due": "1490142216",
+      "time_due": "1490142219"
     }
   }
 ]
