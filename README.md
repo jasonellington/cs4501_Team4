@@ -20,4 +20,3 @@ User Stories:
 - As a user, I would like to have the ability to login to my account
 - As a user, I would like to add a car listing
 - As a user, I would like to logout and have my cookie deleted
-
