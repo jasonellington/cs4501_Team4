@@ -102,7 +102,7 @@ def get_cars(request):
 		results = {}
 
 		for car in Car.objects.all():
-			results[car.id] = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
+			results[car.id] = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats, 'date_created': car.date_created}
 
 		response = {'ok': True, 'result': results}
 

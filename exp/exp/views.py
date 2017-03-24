@@ -13,3 +13,13 @@ def all_cars(request):
 		return JsonResponse({'ok': False, 'result': 'get request failed'})
 	else:
 		return j
+
+def recently_added_cars(request):
+  r = requests.get('http://models-api:8000/api/v1/cars')
+  data = json.loads(r.text)
+  dates = {};
+  for car in data['result']:
+    value = data['result'].get(car)
+    dates.append({car: value['date_created']})
+  dates.sort()
+  return JsonResponse({'ok': True, 'result': dates[:2]})

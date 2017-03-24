@@ -16,7 +16,7 @@ class Car(models.Model):
 	color = models.CharField(max_length=30)
 	body_type = models.CharField(max_length=30)
 	num_seats = models.IntegerField()
-	date_created =models.IntegerField()
+	date_created = models.IntegerField()
 
 class Buyers(models.Model):
 	id = models.CharField(max_length=30, primary_key=True)

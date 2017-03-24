@@ -19,5 +19,6 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^exp/all/cars$', views.all_cars, name='all_cars')
+    url(r'^exp/all/cars$', views.all_cars, name='all_cars'),
+    url(r'^exp/cars/recentlyadded$', views.recently_added_cars, name='recently_added_cars')
 ]
