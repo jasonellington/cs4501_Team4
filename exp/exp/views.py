@@ -13,3 +13,11 @@ def all_cars(request):
 		return JsonResponse({'ok': False, 'result': 'get request failed'})
 	else:
 		return j
+
+def register(request):
+	r = request.post({user_id: request.post['user_id'], passsword: request.post['password'], 'http://models-api:8000/api/v1/create/user')
+	j = JsonResponse(r.json())
+	if j.status_code != 200:
+		return JsonResponse({'ok': False, 'result': 'get request failed'})
+	else:
+		return j

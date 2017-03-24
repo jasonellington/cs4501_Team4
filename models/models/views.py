@@ -13,6 +13,9 @@ def home_page(request):
 def details(request):
 	return render(request, '/web/details.html')
 
+def register(request):
+	return render(request, '/web/register.html')
+
 
 def get_users(request):
 	if request.method == 'GET':
@@ -62,6 +65,7 @@ def update_user(request, id):
 
 @csrf_exempt
 def create_user(request):
+
 	if request.method == 'POST':
 		if request.POST.get('user_id'):
 			user_id = request.POST.get('user_id')
