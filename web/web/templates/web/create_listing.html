@@ -442,15 +442,17 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav pull-right">
-                        <li class=""><a href="home">Home</a></li>
-                        <li class="active"><a href="details">Car Listings</a></li>
-                        <li class=""><a href="create_listing">Create New Listing</a></li>
+                        <li class=""><a href="/home">Home</a></li>
+                        <li class=""><a href="/details">Car Listings</a></li>
+                        <li class="active"><a href="">Create New Listing</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
 </div>
+
+
 
  <!-- Add this css File in head tag-->
 
@@ -480,8 +482,7 @@
                         <div class="row">
                             <!-- Slide Text Layer -->
                             <div class="slide-text slide_style_left">
-                                <h1 data-animation="animated zoomInRight">Car Listings</h1>
-                                <p><a href="#" class="btn btn-primary" role="button">Create New Listing</a> </p>                            
+                                <h1 data-animation="animated zoomInRight">Create a New Listing</h1>                        
                             </div>
                         </div>
                     </div>
@@ -491,29 +492,13 @@
 
             </div><!-- End of Wrapper For Slides -->
         </div> <!-- End  bootstrap-touch-slider Slider -->
-        <div class="container" style="padding-top: 2cm; padding-bottom: 2cm;">
-                <div class="row">
-                {% for key, value in cars.result.items %}
-              <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                  <!-- <img src="..." alt="..."> -->
-                  <div class="caption">
-                    <h3>Car {{ key }}</h3>
-                    <p style="font-size:13px; color:#ffffff;">Car Make: {{ value.make }}</p>
-                        <p style="font-size:13px; color:#507FBD;">Car Model: {{ value.car_model }}</p>
-                        <p style="font-size:13px; color:#507FBD;">Year: {{ value.year }}</p>
-                        <p style="font-size:13px; color:#507FBD;">Color: {{ value.color }}</p>
-                        <p style="font-size:13px; color:#507FBD;">Body Type: {{ value.body_type }}</p>
-                        <p style="font-size:13px; color:#507FBD;"># of Seats: {{ value.num_seats }}</p>
-                    <p><a href="#" class="btn btn-primary" role="button">Reserve</a> </p>
-                  </div>
-                </div>
-              </div>
-              {% endfor %}
-            </div>
-        </div>
 
-
+        <h1>Create listing</h1>
+        <form role="form" action="/listing_created/" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+        <button type="submit">Submit</button>
+        </form>
 
       
 <script type="text/javascript">
