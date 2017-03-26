@@ -15,9 +15,15 @@ def all_cars(request):
 		return j
 
 def register(request):
-	r = request.post({user_id: request.post['user_id'], passsword: request.post['password'], 'http://models-api:8000/api/v1/create/user')
+	params = {'user_id':'user_id', 'password':'password'}
+	r = request.POST('http://models-api:8000/api/v1/create/user', data=params)
 	j = JsonResponse(r.json())
 	if j.status_code != 200:
 		return JsonResponse({'ok': False, 'result': 'get request failed'})
 	else:
 		return j
+
+def listing_created(request):
+	params = {'make':'make', 'car_model':{{ model }}, 'year':'year', 'color':'color', 'body_type':'body_type', 'num_seats':'num_seats'}
+	r = requests.post('http://models-api:8000/api/v1/create/car', data=params)
+	return r.json();
