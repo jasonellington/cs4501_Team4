@@ -12,6 +12,19 @@
       "date_created": "1490142212"
     }
   },
+  {
+    "model": "models.car",
+    "pk": 9,
+    "fields": {
+      "make": "Honda",
+      "car_model": "Accord",
+      "year": "2016",
+      "color": "gray",
+      "body_type": "Sedan",
+      "num_seats": "5",
+      "date_created": "1490144212"
+    }
+  },
   { 
     "model": "models.user",
     "fields": {
@@ -44,7 +57,7 @@
       "color": "blue",
       "body_type": "Sedan",
       "num_seats": "5",
-      "date_created": "1490142212"
+      "date_created": "1390147212"
     }
   },
     {
@@ -57,7 +70,7 @@
       "color": "gray",
       "body_type": "Sedan",
       "num_seats": "5",
-      "date_created" : "1490142212"
+      "date_created" : "1143053611"
     }
   },
   {
