@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+import operator
 
 # Create your views here.
 
@@ -106,7 +107,7 @@ def get_cars(request):
 		results = {}
 
 		for car in Car.objects.all():
-			results[car.id] = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}
+			results[car.id] = {'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats, 'date_created': car.date_created}
 
 		response = {'ok': True, 'result': results}
 
@@ -116,7 +117,7 @@ def get_car(request, car_id):
 	if request.method == 'GET':
 		try:
 			car = Car.objects.get(id=car_id)
-			return JsonResponse({'ok': True, 'result': {'id': car_id, 'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats}})
+			return JsonResponse({'ok': True, 'result': {'id': car_id, 'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats, 'date_created': car.date_created}})
 		
 		except ObjectDoesNotExist:
 			return JsonResponse({'ok': False, 'result': 'car does not exist', 'id': car_id})
@@ -182,7 +183,19 @@ def delete_car(request, id):
 
 		return JsonResponse({'ok': True, 'id': id, 'result': 'car deleted'})
 
+def get_recently_added_cars(request):
+	if request.method == 'GET':
+		results = {}
 
+		for car in Car.objects.all():
+			results[car.id] = car.date_created
+
+		sorted_dates = sorted(results.items(), key=operator.itemgetter(1))
+		sorted_dates.reverse()
+
+		response = {'ok': True, 'result': sorted_dates[:3]}
+
+		return JsonResponse(response)
 
 
 
