@@ -8,10 +8,10 @@ class RegisterForm(forms.Form):
     age = forms.IntegerField(label='Age')
 
 class NewListingForm(forms.Form):
-    make = forms.CharField(label='make', max_length=100)
-    model = forms.CharField(label='model', max_length=100)
-    year = forms.IntegerField(label='year')
-    color = forms.CharField(label='color', max_length=100)
-    body_type = forms.CharField(label='body_type', max_length=100)
-    num_seats = forms.IntegerField(label='num_seats')
+    make = forms.CharField(label='Make', max_length=100)
+    model = forms.CharField(label='Model', max_length=100)
+    year = forms.IntegerField(label='Year')
+    color = forms.CharField(label='Color', max_length=100)
+    body_type = forms.CharField(label='Body type', max_length=100)
+    num_seats = forms.IntegerField(label='# of seats')
     

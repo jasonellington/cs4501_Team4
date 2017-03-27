@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+}
+
+.navbar {
+
+}
+
+.navbar ul {
+  list-style: none;
+}
+
+.navbar li {
+  display: inline-block;
+}
