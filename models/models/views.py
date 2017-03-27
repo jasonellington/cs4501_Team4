@@ -67,7 +67,6 @@ def update_user(request, id):
 
 @csrf_exempt
 def create_user(request):
-
 	if request.method == 'POST':
 		if request.POST.get('user_id'):
 			user_id = request.POST.get('user_id')
@@ -87,12 +86,12 @@ def create_user(request):
 			return JsonResponse({'ok': False, 'result': 'user_id already in use'})
 
 		except ObjectDoesNotExist:
-			user = User(id=user_id, first_name=first_name, last_name=last_name, password=password, age=age, rating=rating)
+			user = User(user_id=user_id, first_name=first_name, last_name=last_name, password=password, age=age, rating=rating)
 			result = user.save()
 
-			results = {'user_id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'password': user.password, 'age': user.age, 'rating': user.rating}
+			results = {'user_id': user_id, 'first_name': first_name, 'last_name': last_name, 'password': password, 'age': age, 'rating': rating}
 
-			return JsonResponse({'ok': True, 'result': results, 'result2': result})
+			return JsonResponse({'ok': True, 'result': results})
 
 @csrf_exempt
 def delete_user(request, id):
