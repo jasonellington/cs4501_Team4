@@ -25,4 +25,3 @@ urlpatterns = [
     url(r'^exp/create/listing$', views.create_listing, name='create_listing'),
     url(r'^exp/listing_created$', views.listing_created, name='listing_created'),
 ]
-

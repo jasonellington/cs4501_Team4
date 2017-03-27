@@ -51,6 +51,7 @@ def listing_created(request):
 	params = {'make':'make', 'car_model':{{ model }}, 'year':'year', 'color':'color', 'body_type':'body_type', 'num_seats':'num_seats'}
 	r = requests.post('http://models-api:8000/api/v1/create/car', data=params)
 	return r.json();
+<<<<<<< HEAD
 	
   return JsonResponse({'ok': False, 'result': 'get request failed'})
 # 	r = request.post({'user_id': request.post['user_id'], 'passsword': request.post['password'], 'http://models-api:8000/api/v1/create/user')
@@ -59,3 +60,5 @@ def listing_created(request):
 # 		return JsonResponse({'ok': False, 'result': 'get request failed'})
 # 	else:
 # 		return j
+=======
+>>>>>>> 0ad62816e760a7e482fb01c94fd95fa290f9a165

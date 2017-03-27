@@ -494,7 +494,7 @@
         </div> <!-- End  bootstrap-touch-slider Slider -->
 
         <h1>Create listing</h1>
-        <form role="form" action="/listing_created/" method="post">
+        <form role="form" action="create_listing" method="post">
             {% csrf_token %}
             {{ form.as_p }}
         <button type="submit">Submit</button>
