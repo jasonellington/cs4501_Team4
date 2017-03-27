@@ -151,8 +151,6 @@ def update_car(request, id):
 @csrf_exempt
 def create_car(request):
 	if request.method == 'POST':
-		if request.POST.get('id'):
-			id = request.POST.get('id')
 		if request.POST.get('make'):
 			make = request.POST.get('make')
 		if request.POST.get('car_model'):
@@ -166,12 +164,11 @@ def create_car(request):
 		if request.POST.get('num_seats'):
 			num_seats = request.POST.get('num_seats')
 		if request.POST.get('date_created'):
-			num_seats = request.POST.get('date_created')
-
-		car = Car(id=id, make=make, car_model=car_model, year=year, color=color, body_type=body_type, num_seats=num_seats, date_created=date_created)
+			date_created = request.POST.get('date_created')
+		car = Car(make=make, car_model=car_model, year=year, color=color, body_type=body_type, num_seats=num_seats, date_created=date_created)
 		car.save()
 
-		results = {'id': car.id, 'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats, 'date_created': car.date_created}
+		results = {'make': make, 'car_model': car_model, 'year': year, 'color': color, 'body_type': body_type, 'num_seats': num_seats, 'date_created': date_created}
 
 		return JsonResponse({'ok': True, 'result': results})
 

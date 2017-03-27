@@ -36,6 +36,17 @@ def register(request):
 	else:
 		return j
 
+def create_listing(request):
+  if request.method == 'GET':
+    r = requests.post('http://models-api:8000/api/v1/create/car', request.POST)
+    return HttpResponse(r.text)
+    # j = JsonResponse(r.json())
+    # if j.status_code != 200:
+    #   return JsonResponse({'ok': False, 'result': 'create listing post request failed'})
+    # else:
+    #   return HttpResponse("hi")
+  return HttpResponse(request.method)
+
 def listing_created(request):
 	params = {'make':'make', 'car_model':{{ model }}, 'year':'year', 'color':'color', 'body_type':'body_type', 'num_seats':'num_seats'}
 	r = requests.post('http://models-api:8000/api/v1/create/car', data=params)

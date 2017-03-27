@@ -43,7 +43,17 @@ def create_listing(request):
 		form = NewListingForm(request.POST)
 
 		if form.is_valid():
-			return HttpResponseRedirect('web/listing_created.html')
+			post_data = {
+            'make': form.cleaned_data['make'],
+            'model': form.cleaned_data['model'],
+            'year': form.cleaned_data['year'],
+            'color': form.cleaned_data['color'],
+            'body_type': form.cleaned_data['body_type'],
+            'num_seats': form.cleaned_data['num_seats']
+      }
+			r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
+			return JsonResponse(r.raise_for_status())
+			# return HttpResponseRedirect('web/listing_created.html')
 
 		else:
 			form = NewListingForm()
@@ -51,9 +61,6 @@ def create_listing(request):
 	return render(request, 'web/create_listing.html', {'form': form_class})
 
 def listing_created(request):
-	
-	form_class = NewListingForm
-
 	if request.method == 'POST':
 
 		form = NewListingForm(request.POST)
@@ -68,5 +75,5 @@ def listing_created(request):
 		else:
 			form = NewListingForm()
 
-	return render(request, 'web/listing_created.html', {'form': form_class, 'make':make, 'model':model, 'year':year, 'color':color, 'body_type':body_type, 'num_seats':num_seats})
+	return render(request, 'web/listing_created.html', {'request': request.POST, 'form': NewListingForm, 'make':make, 'model':model, 'year':year, 'color':color, 'body_type':body_type, 'num_seats':num_seats})
 
