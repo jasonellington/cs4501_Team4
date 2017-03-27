@@ -46,7 +46,6 @@ def check_auth(request):
       authenticator = request.POST.get('authenticator')
       a = requests.get('http://models-api:8000/api/v1/check_auth/%s' % authenticator)
       compare_authenticator = a.json()['authenticator']
-      return HttpResponse(compare_authenticator)
 
       if authenticator == compare_authenticator:
         return JsonResponse(compare_authenticator)
