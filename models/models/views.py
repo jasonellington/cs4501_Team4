@@ -33,6 +33,26 @@ def get_users(request):
 
 		return JsonResponse(response)
 
+def get_user_id(request, user_id):
+	if request.method == 'GET':
+		try:
+			user = User.objects.get(user_id=user_id)
+			return JsonResponse({'user_id' : user_id})
+			
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
+
+def get_password(request, user_id):
+	if request.method == 'GET':
+		try:
+			user = User.objects.get(user_id=user_id)
+			return JsonResponse({'password': user.password})
+
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
+
+
+
 def get_user(request, id):
 	if request.method == 'GET':
 		try:
@@ -183,6 +203,14 @@ def delete_car(request, id):
 		car.delete()
 
 		return JsonResponse({'ok': True, 'id': id, 'result': 'car deleted'})
+
+def delete_auth(request):
+	post = request.POST.get('authenticator')
+	auth = Authenticator.objects.get(authenticator=request.POST.get('authenticator'))
+	auth.delete()
+
+	return JsonResponse({'ok': True, 'id': authenticator, 'result': 'auths deleted'})
+
 
 def get_recently_added_cars(request):
 	if request.method == 'GET':

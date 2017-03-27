@@ -41,24 +41,38 @@ def create_listing(request):
 def login_add_authenticator(request):
 
   if request.method == 'POST':
-
     if request.POST.get('user_id'):
-         user_id = request.POST.get('user_id')
-    
-    if request.POST.get('password'):
-         password = request.POST.get('password')
 
-    temp = requests.get('http://models-api:8000/api/v1/user/%s' % user_id)
-    return HttpResponse(temp)
-    temp_pass = 'blah'
-    temp_pass = temp.json()['password']
+        user_id = request.POST.get('user_id')
+        u = requests.get('http://models-api:8000/api/v1/userid/%s' % user_id)
+        compare_user = u.json()['user_id']
 
-    if password == temp_pass:
+        if user_id == compare_user:
+          if request.POST.get('password'):
 
-      r = requests.post('http://models-api:8000/api/v1/add_auth', request.POST)
-      return HttpResponse(r.text)
+            password = request.POST.get('password')
+            p = requests.get('http://models-api:8000/api/v1/password/%s' % user_id)
+            compare_password = p.json()['password']
+
+
+            if password == compare_password:
+              r = requests.post('http://models-api:8000/api/v1/add_auth', request.POST)
+              return JsonResponse(r.json())
+            else:
+              return HttpResponse("Password is incorrect")
+        else:
+          return HttpResponse("User name is incorrect")
 
   return HttpResponse(request.method)
+
+def login_get_authenticator(request):
+  if request.method == 'GET':
+    r = requests.get('http://models-api:8000/api/v1/auths')
+
+def log_out(request):
+  if request.method == 'POST':
+    r = requests.post('http://models-api:8000/api/v1/delete_auth', request.POST)
+    return HttpResponse(r.text)
 
 
 
