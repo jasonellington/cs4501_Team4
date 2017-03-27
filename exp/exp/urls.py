@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^exp/login$', views.login_add_authenticator, name='login_add_authenticator'),
     url(r'^exp/get_authenticator$', views.login_get_authenticator, name='login_get_authenticator'),
     url(r'^exp/log_out$', views.log_out, name='log_out'),
+    url(r'^exp/check_auth$', views.check_auth, name='check_auth'),
 ]

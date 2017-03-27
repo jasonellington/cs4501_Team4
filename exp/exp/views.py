@@ -38,6 +38,18 @@ def create_listing(request):
 
   return HttpResponse(request.method)
 
+def check_auth(request):
+  if request.method == 'POST':
+    if request.POST.get('authenticator'):
+
+      authenticator = request.POST.get('authenticator')
+      a = requests.get('http://models-api:8000/api/v1/check_auth/%s' % authenticator)
+      compare_authenticator = a.json()['authenticator']
+      return HttpResponse(compare_authenticator)
+
+      if authenticator == compare_authenticator:
+        return JsonResponse(compare_authenticator)
+
 def login_add_authenticator(request):
 
   if request.method == 'POST':
