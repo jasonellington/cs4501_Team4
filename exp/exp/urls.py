@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^exp/cars/recentlyadded$', views.recently_added_cars, name='recently_added_cars'),
     url(r'^exp/register$', views.register, name='register'),
     url(r'^exp/create/listing$', views.create_listing, name='create_listing'),
+    url(r'^exp/login$', views.login_add_authenticator, name='login_add_authenticator'),
 ]

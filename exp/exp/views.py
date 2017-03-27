@@ -37,3 +37,28 @@ def create_listing(request):
     return HttpResponse(r.text)
 
   return HttpResponse(request.method)
+
+def login_add_authenticator(request):
+
+  if request.method == 'POST':
+
+    if request.POST.get('user_id'):
+         user_id = request.POST.get('user_id')
+    
+    if request.POST.get('password'):
+         password = request.POST.get('password')
+
+    temp = requests.get('http://models-api:8000/api/v1/user/%s' % user_id)
+    return HttpResponse(temp)
+    temp_pass = 'blah'
+    temp_pass = temp.json()['password']
+
+    if password == temp_pass:
+
+      r = requests.post('http://models-api:8000/api/v1/add_auth', request.POST)
+      return HttpResponse(r.text)
+
+  return HttpResponse(request.method)
+
+
+

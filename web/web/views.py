@@ -51,8 +51,10 @@ def login(request):
             'user_id': form.cleaned_data['user_id'],
             'password': form.cleaned_data['password'],
       }
-			#r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
-			return render(request, 'web/logged_in.html', {'post_data': post_data})
+			r = requests.post('http://exp-api:8000/exp/login', post_data)
+
+			#return render(request, 'web/logged_in.html', {'post_data': post_data})
+			return HttpResponse(r.text)
 
 		else:
 			form = LoginForm()

@@ -5,7 +5,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
+import os
+import hmac
 import operator
+from django.conf import settings
 
 # Create your views here.
 
@@ -195,11 +198,34 @@ def get_recently_added_cars(request):
 
 		return JsonResponse(response)
 
+@csrf_exempt
+def add_auth(request):
+	if request.method == 'POST':
+		if request.POST.get('user_id'):
+			user_id = request.POST.get('user_id')
 
+		date_created = int(datetime.utcnow().timestamp())
 
+		authenticator = hmac.new(
+			key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256',).hexdigest()
 
+		auth = Authenticator(user_id=user_id, authenticator=authenticator, date_created=date_created)
+		auth.save()
 
+		results = {'user_id': user_id, 'authenticator': authenticator,'date_created': date_created}
 
+		return JsonResponse({'ok': True, 'result': results})
+
+def get_auths(request):
+	if request.method == 'GET':
+		results = {}
+
+		for auth in Authenticator.objects.all():
+			results[auth.user_id] = {'user_id': auth.user_id, 'authenticator': auth.authenticator,'date_created': auth.date_created}
+
+		response = {'ok': True, 'result': results}
+
+		return JsonResponse(response)
 
 
 
