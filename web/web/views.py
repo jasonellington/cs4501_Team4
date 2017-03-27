@@ -70,6 +70,33 @@ def login(request):
 
 	return render(request, 'web/login.html', {'form': form_class})
 
+def create_listing(request):
+	form_class = NewListingForm
+
+	if request.COOKIES.get('my_user_authenticator') != None:
+		post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
+		return HttpResponse('You must be logged in the view this page!')
+
+	if request.method == 'POST':
+		form = NewListingForm(request.POST)
+
+		if form.is_valid():
+			post_data = {
+            'make': form.cleaned_data['make'],
+            'model': form.cleaned_data['model'],
+            'year': form.cleaned_data['year'],
+            'color': form.cleaned_data['color'],
+            'body_type': form.cleaned_data['body_type'],
+            'num_seats': form.cleaned_data['num_seats']
+      }
+			r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
+			return render(request, 'web/listing_created.html', {'post_data': post_data})
+
+		else:
+			form = NewListingForm()
+
+	return render(request, 'web/create_listing.html', {'form': form_class})
+
 
 def log_out(request):
 	if request.method == 'GET':
@@ -93,26 +120,3 @@ def logged_in(request):
 def cookie(request):
 
 	return render(request, 'web/cookie.html')
-
-def create_listing(request):
-	form_class = NewListingForm
-
-	if request.method == 'POST':
-		form = NewListingForm(request.POST)
-
-		if form.is_valid():
-			post_data = {
-            'make': form.cleaned_data['make'],
-            'model': form.cleaned_data['model'],
-            'year': form.cleaned_data['year'],
-            'color': form.cleaned_data['color'],
-            'body_type': form.cleaned_data['body_type'],
-            'num_seats': form.cleaned_data['num_seats']
-      }
-			r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
-			return render(request, 'web/listing_created.html', {'post_data': post_data})
-
-		else:
-			form = NewListingForm()
-
-	return render(request, 'web/create_listing.html', {'form': form_class})
