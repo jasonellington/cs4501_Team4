@@ -42,6 +42,15 @@ def get_user_id(request, user_id):
 		except ObjectDoesNotExist:
 			return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
 
+def check_auth(request, authenticator):
+	if request.method == 'GET':
+		try:
+			auth = Authenticator.objects.get(authenticator=authenticator)
+			return JsonResponse({'authenticator' : authenticator})
+			
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'Authenticator does not exist', 'authenticator': authenticator})
+
 def get_password(request, user_id):
 	if request.method == 'GET':
 		try:

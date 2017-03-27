@@ -75,27 +75,31 @@ def create_listing(request):
 
 	if request.COOKIES.get('my_user_authenticator') != None:
 		post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
-		return HttpResponse('You must be logged in the view this page!')
+		r = requests.post('http://exp-api:8000/exp/check_auth', post_data)
+		if r.status_code == 200:
+			if request.method == 'POST':
+				form = NewListingForm(request.POST)
 
-	if request.method == 'POST':
-		form = NewListingForm(request.POST)
+				if form.is_valid():
+					post_data = {
+		            'make': form.cleaned_data['make'],
+		            'model': form.cleaned_data['model'],
+		            'year': form.cleaned_data['year'],
+		            'color': form.cleaned_data['color'],
+		            'body_type': form.cleaned_data['body_type'],
+		            'num_seats': form.cleaned_data['num_seats']
+		      }
+					r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
+					return render(request, 'web/listing_created.html', {'post_data': post_data})
 
-		if form.is_valid():
-			post_data = {
-            'make': form.cleaned_data['make'],
-            'model': form.cleaned_data['model'],
-            'year': form.cleaned_data['year'],
-            'color': form.cleaned_data['color'],
-            'body_type': form.cleaned_data['body_type'],
-            'num_seats': form.cleaned_data['num_seats']
-      }
-			r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
-			return render(request, 'web/listing_created.html', {'post_data': post_data})
+				else:
+					form = NewListingForm()
 
+			return render(request, 'web/create_listing.html', {'form': form_class})
 		else:
-			form = NewListingForm()
-
-	return render(request, 'web/create_listing.html', {'form': form_class})
+			return HttpResponse('status code error')
+	else:
+		return HttpResponse('shit')
 
 
 def log_out(request):
