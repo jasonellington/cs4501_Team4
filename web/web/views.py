@@ -10,10 +10,9 @@ from .forms import RegisterForm, NewListingForm
 # Create your views here.
 
 def home_page(request):
-	# if r.status_code != 200:
-	# 	return JsonResponse({'ok': False, 'result': 'get request failed'})
-
-	return render(request, 'web/homePage.html')
+	r = requests.get('http://exp-api:8000/exp/cars/recentlyadded')
+	j = r.json()
+	return render(request, 'web/homePage.html', {'cars': j})
 
 def details(request):
 	r = requests.get('http://exp-api:8000/exp/all/cars')
