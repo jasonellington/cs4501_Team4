@@ -25,13 +25,11 @@ def recently_added_cars(request):
   return JsonResponse(cars)
 
 def register(request):
-	params = {'user_id':'user_id', 'password':'password'}
-	r = request.POST('http://models-api:8000/api/v1/create/user', data=params)
-	j = JsonResponse(r.json())
-	if j.status_code != 200:
-		return JsonResponse({'ok': False, 'result': 'get request failed'})
-	else:
-		return j
+  if request.method == 'POST':
+      r = requests.post('http://models-api:8000/api/v1/create/user', request.POST)
+      return HttpResponse(r.text)
+
+  return HttpResponse(request.method)
 
 def create_listing(request):
   if request.method == 'POST':

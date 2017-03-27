@@ -20,16 +20,25 @@ def details(request):
 	return render(request, 'web/details.html', {'cars': j})
 
 def register(request):
-	if request.method == 'POST':
-		register_form = RegisterForm(request.POST)
+  if request.method == 'POST':
+    form = RegisterForm(request.POST)
 
-		if register_form.is_valid():
-			user_id = register_form.cleaned_data['user_id']
-			password = register_form.cleaned_data['password']
-		else:
-			register_form = RegisterForm()
+    if form.is_valid():
+      post_data = {
+            'user_id': form.cleaned_data['user_id'],
+            'password': form.cleaned_data['password'],
+            'first_name': form.cleaned_data['first_name'],
+            'last_name': form.cleaned_data['last_name'],
+            'age': form.cleaned_data['age'],
+            'rating': 0
+      }
+      r = requests.post('http://exp-api:8000/exp/register', post_data)
+      return render(request, 'web/confirm_register.html', {'post_data': post_data})
+			
+    else:
+      register_form = RegisterForm()
 
-	return render(request, 'web/register.html', {'form': register_form, 'user_id': user_id, 'password':password})
+  return render(request, 'web/register.html', {'form': RegisterForm()})
 
 def login(request):
 	return render(request, 'web/login.html')
