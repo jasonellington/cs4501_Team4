@@ -32,6 +32,6 @@ class Sellers(models.Model):
 
 class Authenticator(models.Model):
 	user_id = models.CharField(max_length=30)
-	authenticator = models.IntegerField(primary_key=True)
+	authenticator = models.CharField(max_length=100,primary_key=True)
 	date_created = models.IntegerField()
 	

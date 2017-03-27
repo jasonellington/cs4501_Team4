@@ -5,7 +5,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
+import os
+import hmac
 import operator
+from django.conf import settings
 
 # Create your views here.
 
@@ -29,6 +32,26 @@ def get_users(request):
 		response = {'ok': True, 'result': results}
 
 		return JsonResponse(response)
+
+def get_user_id(request, user_id):
+	if request.method == 'GET':
+		try:
+			user = User.objects.get(user_id=user_id)
+			return JsonResponse({'user_id' : user_id})
+			
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
+
+def get_password(request, user_id):
+	if request.method == 'GET':
+		try:
+			user = User.objects.get(user_id=user_id)
+			return JsonResponse({'password': user.password})
+
+		except ObjectDoesNotExist:
+			return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
+
+
 
 def get_user(request, id):
 	if request.method == 'GET':
@@ -181,6 +204,14 @@ def delete_car(request, id):
 
 		return JsonResponse({'ok': True, 'id': id, 'result': 'car deleted'})
 
+def delete_auth(request):
+	post = request.POST.get('authenticator')
+	auth = Authenticator.objects.get(authenticator=request.POST.get('authenticator'))
+	auth.delete()
+
+	return JsonResponse({'ok': True, 'id': authenticator, 'result': 'auths deleted'})
+
+
 def get_recently_added_cars(request):
 	if request.method == 'GET':
 		results = {}
@@ -195,11 +226,34 @@ def get_recently_added_cars(request):
 
 		return JsonResponse(response)
 
+@csrf_exempt
+def add_auth(request):
+	if request.method == 'POST':
+		if request.POST.get('user_id'):
+			user_id = request.POST.get('user_id')
 
+		date_created = int(datetime.utcnow().timestamp())
 
+		authenticator = hmac.new(
+			key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256',).hexdigest()
 
+		auth = Authenticator(user_id=user_id, authenticator=authenticator, date_created=date_created)
+		auth.save()
 
+		results = {'user_id': user_id, 'authenticator': authenticator,'date_created': date_created}
 
+		return JsonResponse({'ok': True, 'result': results})
+
+def get_auths(request):
+	if request.method == 'GET':
+		results = {}
+
+		for auth in Authenticator.objects.all():
+			results[auth.user_id] = {'user_id': auth.user_id, 'authenticator': auth.authenticator,'date_created': auth.date_created}
+
+		response = {'ok': True, 'result': results}
+
+		return JsonResponse(response)
 
 
 
