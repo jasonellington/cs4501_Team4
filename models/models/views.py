@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
+from django.contrib.auth import hashers
 import os
 import hmac
 import operator
@@ -107,7 +108,7 @@ def create_user(request):
 		if request.POST.get('last_name'):
 			last_name = request.POST.get('last_name')
 		if request.POST.get('password'):
-			password = request.POST.get('password')
+			password = hashers.make_password(request.POST.get('password'))
 		if request.POST.get('age'):
 			age = request.POST.get('age')
 		if request.POST.get('rating'):

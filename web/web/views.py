@@ -61,7 +61,7 @@ def login(request):
       		}
 
 			r = requests.post('http://exp-api:8000/exp/login', post_data)
-			if r.json()['ok'] == True:
+			if r.status_code == 200:
 				authenticator = r.json()['result']['authenticator']
 				response = render(request, 'web/logged_in.html')
 				response.set_cookie('my_user_authenticator', authenticator)
