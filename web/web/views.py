@@ -20,7 +20,6 @@ def details(request):
 	return render(request, 'web/details.html', {'cars': j})
 
 def register(request):
-
 	if request.method == 'POST':
 		register_form = RegisterForm(request.POST)
 
@@ -33,7 +32,6 @@ def register(request):
 	return render(request, 'web/register.html', {'form': register_form, 'user_id': user_id, 'password':password})
 
 def login(request):
-	
 	return render(request, 'web/login.html')
 
 def create_listing(request):
@@ -43,30 +41,18 @@ def create_listing(request):
 		form = NewListingForm(request.POST)
 
 		if form.is_valid():
-			return HttpResponseRedirect('web/listing_created.html')
+			post_data = {
+            'make': form.cleaned_data['make'],
+            'model': form.cleaned_data['model'],
+            'year': form.cleaned_data['year'],
+            'color': form.cleaned_data['color'],
+            'body_type': form.cleaned_data['body_type'],
+            'num_seats': form.cleaned_data['num_seats']
+      }
+			r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
+			return render(request, 'web/listing_created.html', {'post_data': post_data})
 
 		else:
 			form = NewListingForm()
 
 	return render(request, 'web/create_listing.html', {'form': form_class})
-
-def listing_created(request):
-	
-	form_class = NewListingForm
-
-	if request.method == 'POST':
-
-		form = NewListingForm(request.POST)
-
-		if form.is_valid():
-			make = form.cleaned_data['make']
-			model = form.cleaned_data['model']
-			year = form.cleaned_data['year']
-			color = form.cleaned_data['color']
-			body_type = form.cleaned_data['body_type']
-			num_seats = form.cleaned_data['num_seats']
-		else:
-			form = NewListingForm()
-
-	return render(request, 'web/listing_created.html', {'form': form_class, 'make':make, 'model':model, 'year':year, 'color':color, 'body_type':body_type, 'num_seats':num_seats})
-

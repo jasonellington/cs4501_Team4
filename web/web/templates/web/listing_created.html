@@ -493,20 +493,23 @@
             </div><!-- End of Wrapper For Slides -->
         </div> <!-- End  bootstrap-touch-slider Slider -->
 
-            <div class="caption">
-                {% csrf_token %}
-                    <h2>Your new listing:</h2>
-                    <strong> Make: {{ make }} </strong>
-                    <br></br>
-                    <strong> Model: {{ model }} </strong>
-                     <br></br>
-                    <strong> Year: {{ year }} </strong>
-                     <br></br>
-                    <strong> Color: {{ color }} </strong>
-                     <br></br>
-                    <strong> Body Type: {{ body_type }} </strong>
-                     <br></br>
-                    <strong> Number of Available Seats: {{ num_seats }} </strong>
+        <div class="container" style="padding-bottom: 2cm;">
+            <h1 style="padding-top: 50px; padding-bottom: 50px; text-align: center;">Your new listing:</h1>
+            <br><br>
+            <div class="row">
+              <div class="col-sm-6 col-md-4" style="margin: 0 auto;">
+                <div class="thumbnail">
+                  <!-- <img src="..." alt="..."> -->
+                  <div class="caption">
+                    <p style="font-size:13px; color:#ffffff;">Car Make: {{ post_data.make }}</p>
+                        <p style="font-size:13px; color:#507FBD;">Car Model: {{ post_data.model }}</p>
+                        <p style="font-size:13px; color:#507FBD;">Year: {{ post_data.year }}</p>
+                        <p style="font-size:13px; color:#507FBD;">Color: {{ post_data.color }}</p>
+                        <p style="font-size:13px; color:#507FBD;">Body Type: {{ post_data.body_type }}</p>
+                        <p style="font-size:13px; color:#507FBD;"># of Seats: {{ post_data.num_seats }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
 

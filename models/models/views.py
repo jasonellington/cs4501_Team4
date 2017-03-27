@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from datetime import datetime
 import operator
 
 # Create your views here.
@@ -151,12 +152,10 @@ def update_car(request, id):
 @csrf_exempt
 def create_car(request):
 	if request.method == 'POST':
-		if request.POST.get('id'):
-			id = request.POST.get('id')
 		if request.POST.get('make'):
 			make = request.POST.get('make')
-		if request.POST.get('car_model'):
-			car_model = request.POST.get('car_model')
+		if request.POST.get('model'):
+			model = request.POST.get('model')
 		if request.POST.get('year'):
 			year = request.POST.get('year')
 		if request.POST.get('color'):
@@ -165,13 +164,13 @@ def create_car(request):
 			body_type = request.POST.get('body_type')
 		if request.POST.get('num_seats'):
 			num_seats = request.POST.get('num_seats')
-		if request.POST.get('date_created'):
-			num_seats = request.POST.get('date_created')
+		
+		date_created = int(datetime.utcnow().timestamp())
 
-		car = Car(id=id, make=make, car_model=car_model, year=year, color=color, body_type=body_type, num_seats=num_seats, date_created=date_created)
+		car = Car(make=make, car_model=model, year=year, color=color, body_type=body_type, num_seats=num_seats, date_created=date_created)
 		car.save()
 
-		results = {'id': car.id, 'make': car.make, 'car_model': car.car_model, 'year': car.year, 'color': car.color, 'body_type': car.body_type, 'num_seats': car.num_seats, 'date_created': car.date_created}
+		results = {'make': make, 'model': model, 'year': year, 'color': color, 'body_type': body_type, 'num_seats': num_seats, 'date_created': date_created}
 
 		return JsonResponse({'ok': True, 'result': results})
 

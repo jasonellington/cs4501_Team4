@@ -24,5 +24,4 @@ urlpatterns = [
 	url(r'^register$', views.register, name='register'),
 	url(r'^login$', views.login, name='login'),
 	url(r'^create_listing$', views.create_listing, name='create_listing'),
-	url(r'^listing_created/$', views.listing_created, name='listing_created'),
 ]

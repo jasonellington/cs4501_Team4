@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^exp/all/cars$', views.all_cars, name='all_cars'),
     url(r'^exp/cars/recentlyadded$', views.recently_added_cars, name='recently_added_cars'),
     url(r'^exp/register$', views.register, name='register'),
-    url(r'^exp/listing_created$', views.listing_created, name='listing_created'),
+    url(r'^exp/create/listing$', views.create_listing, name='create_listing'),
 ]
