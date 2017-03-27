@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Log In</title>
+    <title>Home Page</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static "styles.css" %}">
@@ -443,7 +443,8 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav pull-right">
                         <li class=""><a href="/home">Home</a></li>
-                        <li class="active"><a href="">Login</a></li>
+                        <li class=""><a href="/details">Car Listings</a></li>
+                        <li class="active"><a href="">Create New Listing</a></li>
                     </ul>
                 </div>
             </div>
@@ -481,7 +482,7 @@
                         <div class="row">
                             <!-- Slide Text Layer -->
                             <div class="slide-text slide_style_left">
-                                <h1 data-animation="animated zoomInRight">Log in to check out the listings.</h1>                        
+                                <h1 data-animation="animated zoomInRight"> Thanks for logging in!</h1>                        
                             </div>
                         </div>
                     </div>
@@ -491,33 +492,6 @@
 
             </div><!-- End of Wrapper For Slides -->
         </div> <!-- End  bootstrap-touch-slider Slider -->
-
-        <div class="container">
-            <h1 style="padding-top: 50px; padding-bottom: 50px; text-align: center;">Login</h1>
-            <form class="login_form" role="form" action="/login" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="login_submit" type="submit">Submit</button>
-            </form>
-
-            <button onclick="window.location.href='/register'">Not registered yet? Register Here</button>
-        </div>
-
-        <style>
-            label {
-                width: 100px;
-                text-align: left;
-            }
-
-            .create_listing_form {
-                text-align: center;
-            }
-
-            .create_listing_submit {
-                margin-top: 30px;
-                margin-bottom: 80px;
-            }
-        </style>
 
       
 <script type="text/javascript">
