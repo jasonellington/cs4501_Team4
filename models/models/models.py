@@ -9,7 +9,7 @@ class User(models.Model):
 	rating = models.IntegerField()
 
 class Car(models.Model):
-	id = models.CharField(max_length=30, primary_key=True)
+	id = models.AutoField(primary_key=True)
 	make = models.CharField(max_length=30)
 	car_model = models.CharField(max_length=30)
 	year = models.IntegerField()
@@ -19,7 +19,7 @@ class Car(models.Model):
 	date_created = models.IntegerField()
 
 class Buyers(models.Model):
-	id = models.CharField(max_length=30, primary_key=True)
+	id = models.AutoField(primary_key=True)
 	user_id = models.CharField(max_length=30)
 
 class Sellers(models.Model):
@@ -34,3 +34,4 @@ class Authenticator(models.Model):
 	user_id = models.CharField(max_length=30)
 	authenticator = models.IntegerField(primary_key=True)
 	date_created = models.IntegerField()
+	

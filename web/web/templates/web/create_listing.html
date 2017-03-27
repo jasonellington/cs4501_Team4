@@ -493,12 +493,30 @@
             </div><!-- End of Wrapper For Slides -->
         </div> <!-- End  bootstrap-touch-slider Slider -->
 
-        <h1>Create listing</h1>
-        <form role="form" action="create_listing" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-        <button type="submit">Submit</button>
-        </form>
+        <div class="container">
+            <h1 style="padding-top: 50px; padding-bottom: 50px; text-align: center;">Create listing</h1>
+            <form class="create_listing_form" role="form" action="create_listing" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="create_listing_submit" type="submit">Submit</button>
+            </form>
+        </div>
+
+        <style>
+            label {
+                width: 100px;
+                text-align: left;
+            }
+
+            .create_listing_form {
+                text-align: center;
+            }
+
+            .create_listing_submit {
+                margin-top: 30px;
+                margin-bottom: 80px;
+            }
+        </style>
 
       
 <script type="text/javascript">

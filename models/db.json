@@ -1,7 +1,6 @@
 [
   {
     "model": "models.car",
-    "pk": 3,
     "fields": {
       "make": "Honda",
       "car_model": "Pilot",
@@ -14,7 +13,6 @@
   },
   {
     "model": "models.car",
-    "pk": 9,
     "fields": {
       "make": "Honda",
       "car_model": "Accord",
@@ -49,7 +47,6 @@
   },
   {
     "model": "models.car",
-    "pk": 6,
     "fields": {
       "make": "Nissan",
       "car_model": "Altima",
@@ -62,7 +59,6 @@
   },
     {
     "model": "models.car",
-    "pk": 7,
     "fields": {
       "make": "Nissan",
       "car_model": "Sentra",
@@ -75,7 +71,6 @@
   },
   {
     "model": "models.buyers",
-    "pk": 4,
     "fields": {
       "user_id": "abp5fn"
     }
