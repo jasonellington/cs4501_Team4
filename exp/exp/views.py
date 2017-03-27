@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import hashers
 import requests, json
 
 
@@ -55,7 +56,7 @@ def login_add_authenticator(request):
             compare_password = p.json()['password']
 
 
-            if password == compare_password:
+            if hashers.check_password(password, compare_password):
               r = requests.post('http://models-api:8000/api/v1/add_auth', request.POST)
               return JsonResponse(r.json())
             else:
