@@ -226,8 +226,8 @@ def delete_car(request, id):
 
 
 def delete_auth(request):
-    post = request.POST.get('authenticator')
-    auth = Authenticator.objects.get(authenticator=request.POST.get('authenticator'))
+    authenticator = request.POST.get('authenticator')
+    auth = Authenticator.objects.get(authenticator=authenticator)
     auth.delete()
 
     return JsonResponse({'ok': True, 'id': authenticator, 'result': 'auths deleted'})

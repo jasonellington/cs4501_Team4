@@ -84,4 +84,5 @@ def login_get_authenticator(request):
 def log_out(request):
     if request.method == 'POST':
         r = requests.post('http://models-api:8000/api/v1/delete_auth', request.POST)
-        return HttpResponse(r.text)
+        return JsonResponse(r.json())
+    return JsonResponse({'ok': False, 'result': 'Incorrect request method'})

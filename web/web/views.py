@@ -111,18 +111,19 @@ def create_listing(request):
 
 
 def log_out(request):
-        if request.method == 'GET':
-                post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
-                r = requests.post('http://exp-api:8000/exp/log_out', post_data)
-                if r.status_code == 200:
-                        response = render(request, 'web/homePage.html')
-                        response.delete_cookie('my_user_authenticator')
-                        form = LoginForm()
-                        return response
-                else:
-                        return HttpResponse("Authenticator not found")
+    if request.method == 'GET':
+        post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
+        r = requests.post('http://exp-api:8000/exp/log_out', post_data)
+        if r.json()['ok'] is True:
+            r = requests.get('http://exp-api:8000/exp/cars/recentlyadded')
+            j = r.json()
+            response = render(request, 'web/homePage.html', {'cars': j})
+            response.delete_cookie('my_user_authenticator')
+            return response
         else:
-                return HttpResponse("Must be a GET request")
+            return HttpResponse("Logout failed. Please try again.")
+    else:
+        return HttpResponse("Must be a GET request")
 
 
 # @login_required
