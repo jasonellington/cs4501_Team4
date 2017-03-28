@@ -19,6 +19,12 @@ def details(request):
 	j = r.json()
 	return render(request, 'web/details.html', {'cars': j})
 
+
+def logged_in(request):
+	r = requests.get('http://exp-api:8000/exp/all/cars')
+	j = r.json()
+	return render(request, 'web/logged_in.html', {'cars': j})
+
 def register(request):
   if request.method == 'POST':
     form = RegisterForm(request.POST)
@@ -46,7 +52,7 @@ def login(request):
 	#check to see if the authenticator saved in cookies is the authenticator
 	if request.COOKIES.get('my_user_authenticator') != None:
 		post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
-		return render(request, 'web/cookie.html')
+		return render(request, 'web/logged_in.html')
 
 	if request.method == 'GET':
 		form = LoginForm()
@@ -76,28 +82,26 @@ def create_listing(request):
 	if request.COOKIES.get('my_user_authenticator') != None:
 		post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
 		r = requests.post('http://exp-api:8000/exp/check_auth', post_data)
-		if r.status_code == 200:
-			if request.method == 'POST':
-				form = NewListingForm(request.POST)
+		
+		if request.method == 'POST':
+			form = NewListingForm(request.POST)
 
-				if form.is_valid():
-					post_data = {
-		            'make': form.cleaned_data['make'],
-		            'model': form.cleaned_data['model'],
-		            'year': form.cleaned_data['year'],
-		            'color': form.cleaned_data['color'],
-		            'body_type': form.cleaned_data['body_type'],
-		            'num_seats': form.cleaned_data['num_seats']
-		      }
-					r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
-					return render(request, 'web/listing_created.html', {'post_data': post_data})
+			if form.is_valid():
+				post_data = {
+	            'make': form.cleaned_data['make'],
+	            'model': form.cleaned_data['model'],
+	            'year': form.cleaned_data['year'],
+	            'color': form.cleaned_data['color'],
+	            'body_type': form.cleaned_data['body_type'],
+	            'num_seats': form.cleaned_data['num_seats']
+	      }
+				r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
+				return render(request, 'web/listing_created.html', {'post_data': post_data})
 
-				else:
-					form = NewListingForm()
+			else:
+				form = NewListingForm()
 
-			return render(request, 'web/create_listing.html', {'form': form_class})
-		else:
-			return HttpResponse('status code error')
+		return render(request, 'web/create_listing.html', {'form': form_class})
 	else:
 		return HttpResponse('shit')
 
@@ -115,10 +119,6 @@ def log_out(request):
 			return HttpResponse("Authenticator not found")
 	else:
 		return HttpResponse("Must be a GET request")
-
-def logged_in(request):
-
-	return render(request, 'web/logged_in.html')
 
 # @login_required
 def cookie(request):
