@@ -438,7 +438,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Namco</a>
+                    <a class="navbar-brand" href="home">Namco</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav pull-right">
@@ -496,13 +496,13 @@
 
         <div class="container">
             <h1 style="padding-top: 50px; padding-bottom: 50px; text-align: center;">Login</h1>
+            <div class="errors">{{error}}</div>
             <form class="login_form" role="form" action="/login" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button class="login_submit" type="submit">Submit</button>
+                <button class="login_submit" type="submit">Submit</button><br>
+                <button class="register-btn" onclick="window.location.href='/register'">Not registered yet? Register Here</button>
             </form>
-
-            <button onclick="window.location.href='/register'">Not registered yet? Register Here</button>
         </div>
 
         <style>
@@ -511,13 +511,24 @@
                 text-align: left;
             }
 
-            .create_listing_form {
+            .login_form {
                 text-align: center;
             }
 
-            .create_listing_submit {
+            .login_submit {
                 margin-top: 30px;
-                margin-bottom: 80px;
+                margin-bottom: 10px;
+            }
+
+            .register-btn {
+                text-align: center;
+                margin-bottom: 100px;
+            }
+
+            .errors {
+                text-align: center;
+                color: red;
+                padding-bottom: 20px;
             }
         </style>
 
