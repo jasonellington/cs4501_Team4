@@ -62,11 +62,13 @@ def login(request):
 
 			r = requests.post('http://exp-api:8000/exp/login', post_data)
 			if r.status_code == 200:
-				authenticator = r.json()['result']['authenticator']
-				response = render(request, 'web/logged_in.html')
-				response.set_cookie('my_user_authenticator', authenticator)
-				return response
-
+				if r.json()['ok'] == True:
+					authenticator = r.json()['result']['authenticator']
+					response = render(request, 'web/logged_in.html')
+					response.set_cookie('my_user_authenticator', authenticator)
+					return response
+				else:
+					return HttpResponse("Incorrect Password")
 
 	return render(request, 'web/login.html', {'form': form_class})
 

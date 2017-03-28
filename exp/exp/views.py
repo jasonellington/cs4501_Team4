@@ -72,7 +72,7 @@ def login_add_authenticator(request):
               r = requests.post('http://models-api:8000/api/v1/add_auth', request.POST)
               return JsonResponse(r.json())
             else:
-              return HttpResponse("Password is incorrect")
+              return JsonResponse({'ok': False, 'result': 'Incorrect password'})
         else:
           return HttpResponse("User name is incorrect")
 
