@@ -21,7 +21,7 @@ User Stories:
 - As a user, I would like to add a car listing
 - As a user, I would like to logout and have my cookie deleted
 
-## Insructions:
+## Instructions:
 - Create an account by finding the register tab
 	- users who do not have accounts do not have the ability to create a listing, they can only view them
 - after creating an account, find the login tab and fill it out with the information you just provided
