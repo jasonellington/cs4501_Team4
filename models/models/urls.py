@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^api/v1/add_auth$', views.add_auth, name='add_auth'),
     url(r'^api/v1/delete_auth$', views.delete_auth, name='delete_auth'),
     url(r'^api/v1/auths$', views.get_auths, name='get_auths'),
-    url(r'^api/v1/check_auth/(?P<authenticator>[a-zA-Z0-9]+)/$', views.check_auth, name='check_auth'),
+    url(r'^api/v1/check_auth/(?P<authenticator>[a-zA-Z0-9]+)/$', views.check_auth, name='check_auth')
 ]
