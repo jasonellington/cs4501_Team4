@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import hashers
+from kafka import KafkaProducer
 import requests, json
 
 
@@ -36,7 +37,22 @@ def register(request):
 
 
 def create_listing(request):
+
+    producer = KafkaProducer(bootstrap_servers='kafka:9092')
+
     if request.method == 'POST':
+
+        make = request.POST.get('make')
+        model = request.POST.get('model')
+        year = request.POST.get('year')
+        color = request.POST.get('color')
+        body_type = request.POST.get('body_type')
+        num_seats = request.POST.get('num_seats')
+
+        some_new_listing = {'make': make, 'model': model, 'year':year, 'color': color, 'body_type': body_type, 'num_seats': num_seats}
+
+        producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
+
         r = requests.post('http://models-api:8000/api/v1/create/car', request.POST)
         return HttpResponse(r.text)
 
@@ -86,3 +102,7 @@ def log_out(request):
         r = requests.post('http://models-api:8000/api/v1/delete_auth', request.POST)
         return JsonResponse(r.json())
     return JsonResponse({'ok': False, 'result': 'Incorrect request method'})
+
+def search(request):
+    return JsonResponse({'ok': False, 'result': 'Incorrect request method'})
+    #run query using elasticsearch for post data form search form

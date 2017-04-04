@@ -3,9 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-import requests
-from .forms import RegisterForm, NewListingForm, LoginForm
-
+import requests, json
+from .forms import RegisterForm, NewListingForm, LoginForm, SearchForm
 
 def home_page(request):
     r = requests.get('http://exp-api:8000/exp/cars/recentlyadded')
@@ -47,7 +46,6 @@ def register(request):
             register_form = RegisterForm()
 
     return render(request, 'web/register.html', {'form': RegisterForm()})
-
 
 def login(request):
     r = requests.get('http://exp-api:8000/exp/all/cars')
@@ -107,7 +105,7 @@ def create_listing(request):
 
         return render(request, 'web/create_listing.html', {'form': form_class})
     else:
-        return HttpResponse('shit')
+        return HttpResponse('Not logged in.')
 
 
 def log_out(request):
@@ -125,7 +123,40 @@ def log_out(request):
     else:
         return HttpResponse("Must be a GET request")
 
-
 # @login_required
 def cookie(request):
         return render(request, 'web/cookie.html')
+
+# @login_required
+def search_results(request):
+        return render(request, 'web/search_results.html')
+
+# @login_required
+def search(request):
+    form_class = SearchForm
+
+    if request.COOKIES.get('my_user_authenticator') is not None:
+        post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
+        r = requests.post('http://exp-api:8000/exp/check_auth', post_data)
+
+        if request.method == 'POST':
+            form = SearchForm(request.POST)
+
+            if form.is_valid():
+                post_data = {
+                    'make': form.cleaned_data['make'],
+                    'model': form.cleaned_data['model'],
+                    'year': form.cleaned_data['year'],
+                    'color': form.cleaned_data['color'],
+                    'body_type': form.cleaned_data['body_type'],
+                    'num_seats': form.cleaned_data['num_seats']
+                }
+                r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
+                return render(request, 'web/search.html', {'post_data': post_data})
+
+            else:
+                form = NewListingForm()
+
+        return render(request, 'web/search.html', {'form': form_class})
+    else:
+        return HttpResponse('Not logged in.')
