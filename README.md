@@ -21,6 +21,16 @@ User Stories:
 - As a user, I would like to add a car listing
 - As a user, I would like to logout and have my cookie deleted
 
+## User Stories - Project 5 - 
+- As a user, I would like to view the search results page
+- As a user, I would like to make a search query using ES
+- As a car owner, I would like the newly created listing to be added to a Kafka queue
+- As a car owner, I would like for a my newly added listing to be added to the search engine
+
+
+A new web front end page, the search result page, will be created. It will call a new experience service, the search experience service, to get the results for a user's query.
+
+
 ## Instructions:
 - Create an account by finding the register tab
 	- users who do not have accounts do not have the ability to create a listing, they can only view them
