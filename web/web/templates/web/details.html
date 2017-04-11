@@ -493,7 +493,16 @@
 
             </div><!-- End of Wrapper For Slides -->
         </div> <!-- End  bootstrap-touch-slider Slider -->
+
         <div class="container" style="padding-top: 2cm; padding-bottom: 2cm;">
+            <h1>Search listings:</h1>
+            <form class="search_form" role="form" action="search" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="search_submit" type="submit">Submit</button>
+            </form>
+            <br>
+            <br>
                 <div class="row">
                 {% for key, value in cars.result.items %}
               <div class="col-sm-6 col-md-4">
