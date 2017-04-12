@@ -116,6 +116,39 @@ def login(request):
             else:
                 return render(request, 'web/login.html', {'form': LoginForm, 'error': 'Invalid username or password'})
 
+def create_listing(request):
+    args = {}
+
+    if request.COOKIES.get('my_user_authenticator') is not None:
+        post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
+        r = requests.post('http://exp-api:8000/exp/check_auth', post_data)
+
+        if request.method == 'POST':
+            form = NewListingForm(request.POST)
+
+            if form.is_valid():
+                post_data = {
+                    'make': form.cleaned_data['make'],
+                    'model': form.cleaned_data['model'],
+                    'year': form.cleaned_data['year'],
+                    'color': form.cleaned_data['color'],
+                    'body_type': form.cleaned_data['body_type'],
+                    'num_seats': form.cleaned_data['num_seats']
+                }
+                r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
+                if r.json()['ok'] is True:
+                    return render(request, 'web/listing_created.html', {'post_data': post_data, 'kafka-test': r.json()['result']})
+                else:
+                    return render(request, 'web/create_listing.html', {'form': NewListingForm(), 'error': 'Duplicate Listing'})
+            else:
+                create_form = NewListingForm()
+                args['form'] = form
+                return render(request, 'web/create_listing.html', args)
+        else:
+            return render(request, 'web/create_listing.html', {'form': NewListingForm()})
+
+    else:
+        return HttpResponse('Not logged in.')
 
 def log_out(request):
     #if the cookie doesn't exist then do not send the request
