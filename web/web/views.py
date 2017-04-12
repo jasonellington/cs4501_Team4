@@ -28,6 +28,7 @@ def logged_in(request):
 
 
 def register(request):
+    args = {}
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
@@ -47,6 +48,8 @@ def register(request):
                 return render(request, 'web/register.html', {'form': RegisterForm(), 'error': 'Username already in use.'})
         else:
             register_form = RegisterForm()
+            args['form'] = form
+            return render(request, 'web/register.html', args)
 
     return render(request, 'web/register.html', {'form': RegisterForm()})
 
@@ -82,9 +85,8 @@ def login(request):
             else:
                 return render(request, 'web/login.html', {'form': LoginForm, 'error': 'Invalid username or password'})
 
-
 def create_listing(request):
-    form_class = NewListingForm
+    args = {}
 
     if request.COOKIES.get('my_user_authenticator') is not None:
         post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
@@ -103,29 +105,39 @@ def create_listing(request):
                     'num_seats': form.cleaned_data['num_seats']
                 }
                 r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
-
-                return render(request, 'web/listing_created.html', {'post_data': post_data, 'kafka-test': r.json()['result']})
-
+                if r.json()['ok'] is True:
+                    return render(request, 'web/listing_created.html', {'post_data': post_data, 'kafka-test': r.json()['result']})
+                else:
+                    return render(request, 'web/create_listing.html', {'form': NewListingForm(), 'error': 'Duplicate Listing'})
             else:
-                form = NewListingForm()
+                create_form = NewListingForm()
+                args['form'] = form
+                return render(request, 'web/create_listing.html', args)
+        else:
+            return render(request, 'web/create_listing.html', {'form': NewListingForm()})
 
-        return render(request, 'web/create_listing.html', {'form': form_class})
     else:
         return HttpResponse('Not logged in.')
 
-
 def log_out(request):
+    #if the cookie doesn't exist then do not send the request
+
     if request.method == 'GET':
-        post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
-        r = requests.post('http://exp-api:8000/exp/log_out', post_data)
-        if r.json()['ok'] is True:
+        if request.COOKIES.get('my_user_authenticator') is not None:
+            post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
+            r = requests.post('http://exp-api:8000/exp/log_out', post_data)
+            if r.json()['ok'] is True:
+                r = requests.get('http://exp-api:8000/exp/cars/recentlyadded')
+                j = r.json()
+                response = render(request, 'web/homePage.html', {'cars': j})
+                response.delete_cookie('my_user_authenticator')
+                return response
+            else:
+                return HttpResponse("Logout failed. Please try again.")
+        else:
             r = requests.get('http://exp-api:8000/exp/cars/recentlyadded')
             j = r.json()
-            response = render(request, 'web/homePage.html', {'cars': j})
-            response.delete_cookie('my_user_authenticator')
-            return response
-        else:
-            return HttpResponse("Logout failed. Please try again.")
+            return render(request, 'web/homePage.html', {'cars': j})
     else:
         return HttpResponse("Must be a GET request")
 
