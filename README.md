@@ -36,3 +36,4 @@ A new web front end page, the search result page, will be created. It will call 
 	- users who do not have accounts do not have the ability to create a listing, they can only view them
 - after creating an account, find the login tab and fill it out with the information you just provided
 - Users who successfully login, have the ability to view the user portal and create a new listing
+- You must create a listing FIRST, and THEN you are able to search for that listing
