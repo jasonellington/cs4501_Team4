@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
+    <title>User Portal</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static "styles.css" %}">
@@ -438,7 +438,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home">Namco</a>
+                    <a class="navbar-brand" href="/logged_in">Namco</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav pull-right">
@@ -493,6 +493,13 @@
             </div><!-- End of Wrapper For Slides -->
         </div> <!-- End  bootstrap-touch-slider Slider -->
         <div class="container" style="padding-top: 2cm; padding-bottom: 2cm;">
+            <h1>Search listings:</h1>
+            <form class="search_form" role="form" action="search" method="post">
+                {% csrf_token %} {{ form.as_p }}
+                <button class="search_submit" type="submit">Submit</button>
+            </form>
+            <br>
+            <br>
             <h1>Browse Listings:</h1>
             <br>
             <br>

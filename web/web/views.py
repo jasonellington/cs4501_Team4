@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from elasticsearch import Elasticsearch
 import requests, json
 from .forms import RegisterForm, NewListingForm, LoginForm, SearchForm
 
@@ -13,15 +14,17 @@ def home_page(request):
 
 
 def details(request):
+    form = SearchForm
     r = requests.get('http://exp-api:8000/exp/all/cars')
     j = r.json()
-    return render(request, 'web/details.html', {'cars': j})
+    return render(request, 'web/details.html', {'cars': j, 'form': form})
 
 
 def logged_in(request):
+    form = SearchForm
     r = requests.get('http://exp-api:8000/exp/all/cars')
     j = r.json()
-    return render(request, 'web/logged_in.html', {'cars': j})
+    return render(request, 'web/logged_in.html', {'cars': j, 'form': form})
 
 
 def register(request):
@@ -55,8 +58,9 @@ def login(request):
     j = r.json()
     #check to see if the authenticator saved in cookies is the authenticator
     if request.COOKIES.get('my_user_authenticator') is not None:
+        form = SearchForm
         post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
-        return render(request, 'web/logged_in.html', {'cars': j})
+        return render(request, 'web/logged_in.html', {'cars': j, 'form':form})
 
     if request.method == 'GET':
         form = LoginForm()
@@ -73,8 +77,9 @@ def login(request):
 
             r = requests.post('http://exp-api:8000/exp/login', post_data)
             if r.json()['ok'] is True:
+                form = SearchForm
                 authenticator = r.json()['result']['authenticator']
-                response = render(request, 'web/logged_in.html', {'cars': j})
+                response = render(request, 'web/logged_in.html', {'cars': j, 'form':form})
                 response.set_cookie('my_user_authenticator', authenticator)
                 return response
             else:
@@ -136,40 +141,32 @@ def log_out(request):
     else:
         return HttpResponse("Must be a GET request")
 
+
 # @login_required
 def cookie(request):
-        return render(request, 'web/cookie.html')
+    return render(request, 'web/cookie.html')
+
 
 # @login_required
 def search_results(request):
-        return render(request, 'web/search_results.html')
+    return render(request, 'web/search_results.html')
+
 
 # @login_required
 def search(request):
-    form_class = SearchForm
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
 
-    if request.COOKIES.get('my_user_authenticator') is not None:
-        post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
-        r = requests.post('http://exp-api:8000/exp/check_auth', post_data)
+        if form.is_valid():
+            post_data = {'query': form.cleaned_data['query']}
 
-        if request.method == 'POST':
-            form = SearchForm(request.POST)
+            r = requests.post('http://exp-api:8000/exp/search', post_data)
+            j = r.json()
 
-            if form.is_valid():
-                post_data = {
-                    'make': form.cleaned_data['make'],
-                    'model': form.cleaned_data['model'],
-                    'year': form.cleaned_data['year'],
-                    'color': form.cleaned_data['color'],
-                    'body_type': form.cleaned_data['body_type'],
-                    'num_seats': form.cleaned_data['num_seats']
-                }
-                r = requests.post('http://exp-api:8000/exp/create/listing', post_data)
-                return render(request, 'web/search.html', {'post_data': post_data})
-
-            else:
-                form = NewListingForm()
-
-        return render(request, 'web/search.html', {'form': form_class})
+            return render(request, 'web/search_results.html', {'search_results': j['result']})
     else:
-        return HttpResponse('Not logged in.')
+        form = SearchForm
+        r = requests.get('http://exp-api:8000/exp/all/cars')
+        j = r.json()
+        return render(request, 'web/search.html', {'cars': j, 'form': form})
+    

@@ -5,7 +5,9 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import hashers
 from kafka import KafkaProducer
-import requests, json
+from elasticsearch import Elasticsearch
+import requests
+import json
 
 
 def all_cars(request):
@@ -37,9 +39,6 @@ def register(request):
 
 
 def create_listing(request):
-
-    producer = KafkaProducer(bootstrap_servers='kafka:9092')
-
     if request.method == 'POST':
 
         make = request.POST.get('make')
@@ -49,12 +48,25 @@ def create_listing(request):
         body_type = request.POST.get('body_type')
         num_seats = request.POST.get('num_seats')
 
-        some_new_listing = {'make': make, 'model': model, 'year':year, 'color': color, 'body_type': body_type, 'num_seats': num_seats}
-
-        producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
-
         r = requests.post('http://models-api:8000/api/v1/create/car', request.POST)
-        return HttpResponse(r.text)
+        j = r.json()
+
+        producer = KafkaProducer(bootstrap_servers='kafka:9092')
+
+        new_listing = {
+            'id': j['result']['id'],
+            'make': j['result']['make'],
+            'car_model': j['result']['car_model'],
+            'year': j['result']['year'],
+            'color': j['result']['color'],
+            'body_type': j['result']['body_type'],
+            'num_seats': j['result']['num_seats'],
+            'date_created': j['result']['date_created']
+        }
+
+        producer.send('new-listings-topic', json.dumps(new_listing).encode('utf-8'))
+
+        return JsonResponse({'ok': True, 'result': new_listing})
 
     return HttpResponse(request.method)
 
@@ -103,6 +115,17 @@ def log_out(request):
         return JsonResponse(r.json())
     return JsonResponse({'ok': False, 'result': 'Incorrect request method'})
 
+
 def search(request):
-    return JsonResponse({'ok': False, 'result': 'Incorrect request method'})
-    #run query using elasticsearch for post data form search form
+    if request.method == 'POST':
+        es = Elasticsearch(['es'])
+        search_results = es.search(index='listing_index', body={'query': {'query_string': {'query': request.POST.get('query')}}, 'size': 10})
+
+        search = search_results['hits']['hits']
+        search2 = []
+        for item in search:
+            search2.append(item['_source'])
+
+        return JsonResponse({'ok': True, 'result': search2})
+
+    return render(request, 'web/search.html', {'form': form_class})

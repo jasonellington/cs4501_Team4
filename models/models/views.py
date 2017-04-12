@@ -211,7 +211,8 @@ def create_car(request):
         car = Car(make=make, car_model=model, year=year, color=color, body_type=body_type, num_seats=num_seats, date_created=date_created)
         car.save()
 
-        results = {'make': make, 'model': model, 'year': year, 'color': color, 'body_type': body_type, 'num_seats': num_seats, 'date_created': date_created}
+        car2 = Car.objects.get(date_created=date_created)
+        results = {'id': car2.id, 'make': car2.make, 'car_model': car2.car_model, 'year': car2.year, 'color': car2.color, 'body_type': car2.body_type, 'num_seats': car2.num_seats, 'date_created': car2.date_created}
 
         return JsonResponse({'ok': True, 'result': results})
 
