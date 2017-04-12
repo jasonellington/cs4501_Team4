@@ -21,9 +21,10 @@ def details(request):
 
 
 def logged_in(request):
+    form = SearchForm
     r = requests.get('http://exp-api:8000/exp/all/cars')
     j = r.json()
-    return render(request, 'web/logged_in.html', {'cars': j})
+    return render(request, 'web/logged_in.html', {'cars': j, 'form': form})
 
 
 def register(request):
@@ -54,8 +55,9 @@ def login(request):
     j = r.json()
     #check to see if the authenticator saved in cookies is the authenticator
     if request.COOKIES.get('my_user_authenticator') is not None:
+        form = SearchForm
         post_data = {'authenticator': request.COOKIES.get('my_user_authenticator')}
-        return render(request, 'web/logged_in.html', {'cars': j})
+        return render(request, 'web/logged_in.html', {'cars': j, 'form':form})
 
     if request.method == 'GET':
         form = LoginForm()
@@ -72,8 +74,9 @@ def login(request):
 
             r = requests.post('http://exp-api:8000/exp/login', post_data)
             if r.json()['ok'] is True:
+                form = SearchForm
                 authenticator = r.json()['result']['authenticator']
-                response = render(request, 'web/logged_in.html', {'cars': j})
+                response = render(request, 'web/logged_in.html', {'cars': j, 'form':form})
                 response.set_cookie('my_user_authenticator', authenticator)
                 return response
             else:
@@ -149,7 +152,9 @@ def search(request):
             j = r.json()
 
             return render(request, 'web/search_results.html', {'search_results': j['result']})
-        else:
-            register_form = RegisterForm()
-
-    return render(request, 'web/register.html', {'form': RegisterForm()})
+    else:
+        form = SearchForm
+        r = requests.get('http://exp-api:8000/exp/all/cars')
+        j = r.json()
+        return render(request, 'web/search.html', {'cars': j, 'form': form})
+    

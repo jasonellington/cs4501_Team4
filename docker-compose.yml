@@ -6,7 +6,7 @@ models:
       - "8001:8000"
    volumes:
       - ./models/:/app
-   command: bash -c "python ./manage.py makemigrations models && python ./manage.py migrate && python ./manage.py loaddata db.json && python load_fixtures.py && mod_wsgi-express start-server --reload-on-changes ./models/wsgi.py && docker run -it --name web -p 8001:8000"
+   command: bash -c "python ./manage.py makemigrations models && python ./manage.py migrate && python ./manage.py loaddata db.json && mod_wsgi-express start-server --reload-on-changes ./models/wsgi.py && docker run -it --name web -p 8001:8000"
 
 exp:
    image: tp33/django

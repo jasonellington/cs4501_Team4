@@ -121,6 +121,11 @@ def search(request):
         es = Elasticsearch(['es'])
         search_results = es.search(index='listing_index', body={'query': {'query_string': {'query': request.POST.get('query')}}, 'size': 10})
 
-        return JsonResponse({'ok': True, 'result': search_results})
+        search = search_results['hits']['hits']
+        search2 = []
+        for item in search:
+            search2.append(item['_source'])
+
+        return JsonResponse({'ok': True, 'result': search2})
 
     return render(request, 'web/search.html', {'form': form_class})
