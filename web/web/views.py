@@ -151,9 +151,12 @@ def cookie(request):
 def search_results(request):
     return render(request, 'web/search_results.html')
 
-
 # @login_required
 def search(request):
+    user = False
+    if request.COOKIES.get('my_user_authenticator') is not None:
+        user = True
+
     if request.method == 'POST':
         form = SearchForm(request.POST)
 
@@ -163,10 +166,10 @@ def search(request):
             r = requests.post('http://exp-api:8000/exp/search', post_data)
             j = r.json()
 
-            return render(request, 'web/search_results.html', {'search_results': j['result']})
+            return render(request, 'web/search_results.html', {'search_results': j['result'], 'user': user})
     else:
         form = SearchForm
         r = requests.get('http://exp-api:8000/exp/all/cars')
         j = r.json()
-        return render(request, 'web/search.html', {'cars': j, 'form': form})
+        return render(request, 'web/search.html', {'cars': j, 'form': form, 'user': user})
     

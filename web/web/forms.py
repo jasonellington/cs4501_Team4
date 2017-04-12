@@ -23,20 +23,10 @@ class RegisterForm(forms.Form):
 class NewListingForm(forms.Form):
     make = forms.CharField(label='Make', max_length=100)
     model = forms.CharField(label='Model', max_length=100)
-    c_model = forms.CharField(label='Confirm Model', max_length=100)
     year = forms.IntegerField(label='Year', validators=[MaxValueValidator(2018), MinValueValidator(1960)])
     color = forms.CharField(label='Color', max_length=100)
     body_type = forms.CharField(label='Body type', max_length=100)
     num_seats = forms.IntegerField(label='# of seats', validators=[MaxValueValidator(30), MinValueValidator(1)])
-
-    def clean_model(self):
-        model = self.cleaned_data.get('model')
-        model2 = self.cleaned_data.get('c_model')
-
-        if model and model != model2:
-            raise forms.ValidationError("Models don't match")
-
-        return self.cleaned_data
 
 
 class LoginForm(forms.Form):
