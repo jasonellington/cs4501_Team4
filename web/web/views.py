@@ -151,7 +151,6 @@ def cookie(request):
 def search_results(request):
     return render(request, 'web/search_results.html')
 
-
 # @login_required
 def search(request):
     user = False
