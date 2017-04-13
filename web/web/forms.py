@@ -9,7 +9,6 @@ class RegisterForm(forms.Form):
     last_name = forms.CharField(label='Last Name', max_length=100)
     age = forms.IntegerField(label='Age', validators=[MaxValueValidator(100), MinValueValidator(1)])
 
-
 class NewListingForm(forms.Form):
     make = forms.CharField(label='Make', max_length=100)
     model = forms.CharField(label='Model', max_length=100)
