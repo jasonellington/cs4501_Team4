@@ -66,21 +66,21 @@ def get_password(request, user_id):
             return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
 
 
-def get_user(request, id):
+def get_user(request, user_id):
     if request.method == 'GET':
         try:
-            user = User.objects.get(id=user_id)
-            return JsonResponse({'ok': True, 'result': {'id': user_id, 'first_name': user.first_name, 'last_name': user.last_name, 'user_id': user.user_id, 'age': user.age, 'rating': user.rating}})
+            user = User.objects.get(user_id=user_id)
+            return JsonResponse({'ok': True, 'result': {'user_id': user_id, 'first_name': user.first_name, 'last_name': user.last_name, 'user_id': user.user_id, 'age': user.age, 'rating': user.rating}})
 
         except ObjectDoesNotExist:
             return JsonResponse({'ok': False, 'result': 'user does not exist', 'id': user_id})
 
 
 @csrf_exempt
-def update_user(request, id):
+def update_user(request, user_id):
     if request.method == 'POST':
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(user_id=user_id)
             if request.POST.get('first_name'):
                 user.first_name = request.POST.get('first_name')
             if request.POST.get('last_name'):
