@@ -2,8 +2,8 @@ models:
    image: tp33/django
    external_links:
       - mysql:db
-   ports:
-      - "8001:8000"
+   # ports:
+   #    - "8001:8000"
    volumes:
       - ./models/:/app
    command: bash -c "python ./manage.py makemigrations models && python ./manage.py migrate && python ./manage.py loaddata db.json && mod_wsgi-express start-server --reload-on-changes ./models/wsgi.py && docker run -it --name web -p 8001:8000"
@@ -14,8 +14,8 @@ exp:
       - models:models-api
       - kafka:kafka
       - es:es
-   ports:
-      - "8002:8000"
+   # ports:
+   #    - "8002:8000"
    volumes:
       - ./exp/:/app
    command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes ./exp/wsgi.py"
