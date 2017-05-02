@@ -20,12 +20,22 @@ exp:
       - ./exp/:/app
    command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes ./exp/wsgi.py"
 
-web:
+web1:
    image: tp33/django
    links:
       - exp:exp-api
    ports:
       - "8003:8000"
+   volumes:
+      - ./web/:/app
+   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes ./web/wsgi.py"
+
+web2:
+   image: tp33/django
+   links:
+      - exp:exp-api
+   ports:
+      - "8006:8000"
    volumes:
       - ./web/:/app
    command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes ./web/wsgi.py"
@@ -53,3 +63,14 @@ batch:
    volumes:
       - ./:/app
    command: bash -c "python ./search_indexer.py"
+
+load_balancer:
+  image: my-haproxy
+  container_name: load_balancer
+  ports:
+    - "8005:8000"
+  links:
+    - web1:web1
+    - web2:web2
+  volumes:
+    - ./hap/:/haproxy.cfg
