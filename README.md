@@ -30,6 +30,11 @@ User Stories:
 
 A new web front end page, the search result page, will be created. It will call a new experience service, the search experience service, to get the results for a user's query.
 
+## User Stories - Project 6 -
+- As a user, I would like to be able to access the site using DigitalOcean
+- As a user, I would like usability test and integration test to be checked by TravisCI
+- As a user, I would like load balance to be implemented using HAProxy
+
 
 ## Instructions:
 - Create an account by finding the register tab
