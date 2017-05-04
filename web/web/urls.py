@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'^cookie$', views.cookie, name='cookie'),
     url(r'^log_out$', views.log_out, name='log_out'),
     url(r'^search_results$', views.search_results, name='search_results'),
-    url(r'^search$', views.search, name='search')
+    url(r'^search$', views.search, name='search'),
+    url(r'^single_listing_result$', views.single_listing_result, name='single_listing_result'),
+    url(r'^single_listing/(?P<id>[0-9]+)$', views.single_listing, name='single_listing')
 ]

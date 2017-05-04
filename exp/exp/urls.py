@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^exp/all/cars$', views.all_cars, name='all_cars'),
     url(r'^exp/cars/recentlyadded$', views.recently_added_cars, name='recently_added_cars'),
+    url(r'^exp/cars/single_car$', views.single_car, name='single_car'),
     url(r'^exp/register$', views.register, name='register'),
     url(r'^exp/create/listing$', views.create_listing, name='create_listing'),
     url(r'^exp/login$', views.login_add_authenticator, name='login_add_authenticator'),

@@ -29,6 +29,11 @@ def recently_added_cars(request):
         cars[car_id] = temp.json()['result']
     return JsonResponse(cars)
 
+def single_car(request):
+    r = requests.get('http://models-api:8000/api/v1/car/%d' % int(request.POST.get('car_id')))
+    j = r.json()
+    return JsonResponse(j)
+
 
 def register(request):
     if request.method == 'POST':

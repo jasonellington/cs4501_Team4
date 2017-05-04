@@ -172,4 +172,32 @@ def search(request):
         r = requests.get('http://exp-api:8000/exp/all/cars')
         j = r.json()
         return render(request, 'web/search.html', {'cars': j, 'form': form, 'user': user})
-    
+
+
+def single_listing_result(request):
+     return render(requerst, 'web/single_listing_result.html')
+
+
+def single_listing(request, id):
+    user = False
+    if request.COOKIES.get('my_user_authenticator') is not None:
+        user = True
+
+    if request.method == 'GET':
+            post_data = {'car_id': id}
+
+            r = requests.post('http://exp-api:8000/exp/cars/single_car', post_data)
+            j = r.json()
+            # return HttpResponse(j['result'])
+
+            return render(request, 'web/single_listing_result.html', {'single_listing_result': j['result'], 'user': user})
+    else:
+        r = requests.get('http://exp-api:8000/exp/all/cars')
+        j = r.json()
+        return render(request, 'web/logged_in.html', {'cars': j, 'user': user})
+
+
+
+
+
+

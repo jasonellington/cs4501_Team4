@@ -25,3 +25,6 @@ class LoginForm(forms.Form):
 
 class SearchForm(forms.Form):
     query = forms.CharField(label='', max_length=100)
+
+class CarForm(forms.Form):
+    query = forms.CharField(label='', max_length=100)
