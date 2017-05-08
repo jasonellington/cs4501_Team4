@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
+    <title>Register</title>
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -258,7 +258,7 @@
         <div class="error">{{error}}</div>
         <form role="form" action="register" method="post">
             {% csrf_token %} {{ form.as_p }}
-            <button class="bnt" type="submit">Register</button>
+            <button class="bnt" type="submit" id="submit">Register</button>
         </form>
     </div>
 
