@@ -269,7 +269,7 @@
         <h2>Search listings:</h2>
         <form class="search_form" role="form" action="search" method="post">
             {% csrf_token %} {{ form.as_p }}
-            <button class="btn" type="submit">Submit</button>
+            <button class="btn" type="submit" id="submit">Submit</button>
         </form>
     </div>
 
