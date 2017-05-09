@@ -2,8 +2,6 @@ models:
    image: tp33/django
    external_links:
       - mysql:db
-   # ports:
-   #    - "8001:8000"
    volumes:
       - ./models/:/app
    command: bash -c "python ./manage.py makemigrations models && python ./manage.py migrate && python ./manage.py loaddata db.json && mod_wsgi-express start-server --reload-on-changes ./models/wsgi.py && docker run -it --name web -p 8001:8000"
@@ -24,11 +22,12 @@ web1:
    image: tp33/django
    links:
       - exp:exp-api
+      - selenium_chrome:selenium_chrome
    ports:
       - "8003:8000"
    volumes:
       - ./web/:/app
-   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes ./web/wsgi.py"
+   command: bash -c "pip install selenium && pip install requests && mod_wsgi-express start-server --reload-on-changes ./web/wsgi.py"
 
 web2:
    image: tp33/django
@@ -72,5 +71,12 @@ load_balancer:
   links:
     - web1:web1
     - web2:web2
+    - selenium_chrome:selenium_chrome
   volumes:
     - ./hap/:/haproxy.cfg
+
+selenium_chrome:
+  image: selenium/standalone-chrome
+  container_name: selenium_chrome
+  ports:
+    - "4444:4444"
