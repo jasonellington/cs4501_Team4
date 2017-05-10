@@ -27,7 +27,6 @@ User Stories:
 - As a car owner, I would like the newly created listing to be added to a Kafka queue
 - As a car owner, I would like for a my newly added listing to be added to the search engine
 
-
 A new web front end page, the search result page, will be created. It will call a new experience service, the search experience service, to get the results for a user's query.
 
 ## User Stories - Project 6 -
