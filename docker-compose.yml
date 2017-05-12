@@ -104,7 +104,7 @@ spark-master:
     - 7077:7077
     - 8082:8080
   volumes:
-    - ./data:/tmp/data
+    - ./data:/app
 
 spark-worker:
   image: gettyimages/spark
@@ -129,4 +129,13 @@ spark-worker:
   ports:
     - 8081:8081
   volumes:
-    - ./data:/tmp/data
+    - ./data:/app
+
+spark_batch:
+   image: tp33/django
+   container_name: spark_batch
+   links:
+      - kafka:kafka
+   volumes:
+      - ./:/app
+   command: bash -c "python ./data/update_log.py"

@@ -29,10 +29,29 @@ def recently_added_cars(request):
         cars[car_id] = temp.json()['result']
     return JsonResponse(cars)
 
+
 def single_car(request):
-    r = requests.get('http://models-api:8000/api/v1/car/%d' % int(request.POST.get('car_id')))
-    j = r.json()
-    return JsonResponse(j)
+    if request.method == 'POST':
+        auth = request.POST.get('authenticator')
+        r = requests.get('http://models-api:8000/api/v1/auth/%s' % request.POST.get('authenticator'))
+        j = r.json()
+
+        producer = KafkaProducer(bootstrap_servers='kafka:9092')
+
+        item_viewed = {
+            'user_id': j['user_id'],
+            'car_id': request.POST.get('car_id')
+        }
+
+        user_id = j['user_id']
+
+        producer.send('popular-items', json.dumps(item_viewed).encode('utf-8'))
+
+        r = requests.get('http://models-api:8000/api/v1/car/%d' % int(request.POST.get('car_id')))
+        j = r.json()
+        return JsonResponse(j)
+
+    return JsonResponse({'ok': False, 'result': 'Not a post'})
 
 
 def register(request):

@@ -37,6 +37,10 @@ class Sellers(models.Model):
 
 class Authenticator(models.Model):
     user_id = models.CharField(max_length=30)
-    authenticator = models.CharField(max_length=100,primary_key=True)
+    authenticator = models.CharField(max_length=100, primary_key=True)
     date_created = models.IntegerField()
-    
+
+
+class Recommendations(models.Model):
+    car_id = models.CharField(max_length=30, primary_key=True)
+    recommended_items = models.CharField(max_length=100)

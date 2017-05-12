@@ -179,18 +179,17 @@ def single_listing_result(request):
 
 
 def single_listing(request, id):
-    user = False
+    logged_in = False
     if request.COOKIES.get('my_user_authenticator') is not None:
-        user = True
+        logged_in = True
 
     if request.method == 'GET':
-            post_data = {'car_id': id}
+            post_data = {'car_id': id, 'authenticator': request.COOKIES.get('my_user_authenticator')}
 
             r = requests.post('http://exp-api:8000/exp/cars/single_car', post_data)
             j = r.json()
-            # return HttpResponse(j['result'])
 
-            return render(request, 'web/single_listing_result.html', {'single_listing_result': j['result'], 'user': user})
+            return render(request, 'web/single_listing_result.html', {'single_listing_result': j['result'], 'logged_in': logged_in})
     else:
         r = requests.get('http://exp-api:8000/exp/all/cars')
         j = r.json()
