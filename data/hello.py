@@ -1,19 +1,25 @@
 from pyspark import SparkContext
-import itertools
+from itertools import *
+from functools import partial
 
 sc = SparkContext("spark://spark-master:7077", "PopularItems")
 
-data = sc.textFile("/app/access.log", 2)     # each worker loads a piece of the data file
+data = sc.textFile("/app/access.log", 2)
 
-pairs = data.map(lambda line: line.split("\t"))   # tell each worker to split each line of it's partition
-pages = pairs.map(lambda pair: (pair[0], pair[1]))      # re-layout the data to ignore the user id
-pairs_by_user = pages.reduceByKey()
-reduced_pairs = combinations((pairs_by_user), 2)     # shuffle the data so that each key is only on one worker
-                                                  # and then reduce all the values by adding them together
+distinct_data = data.distinct()
 
-output = reduced_pairs.collect()                          # bring the data back to the master node so we can print it out
-for user_id, items in output:
-    print ("page_id %s count %d" % (user_id, items))
-print ("Popular items done")
+pairs = distinct_data.map(lambda line: line.split("\t"))
+pairs_by_user = pairs.groupByKey()
+reduced_pairs = pairs_by_user.flatMapValues(partial(combinations, r=2))
+
+key_tup = reduced_pairs.groupBy(lambda tup: tup[1])
+
+pages = key_tup.map(lambda pair: (pair[0], 1))
+count = pages.reduceByKey(lambda x, y: int(x)+int(y))
+
+output = count.collect()
+print("reduced_pairs:")
+for x, y in output:
+    print("x: %s y: %s" % (x, y))
 
 sc.stop()
