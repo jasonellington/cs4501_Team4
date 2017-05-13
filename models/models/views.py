@@ -36,7 +36,16 @@ def get_users(request):
         return JsonResponse(response)
 
 
-def get_user_id(request, user_id):
+def get_user_id(request, auth):
+    if request.method == 'GET':
+        try:
+            user = Authenticator.objects.get(authenticator=auth)
+            return JsonResponse({'ok': True, 'user_id': user.user_id})
+
+        except ObjectDoesNotExist:
+            return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
+
+def get_user_id_for_login(request, user_id):
     if request.method == 'GET':
         try:
             user = User.objects.get(user_id=user_id)
@@ -44,6 +53,8 @@ def get_user_id(request, user_id):
 
         except ObjectDoesNotExist:
             return JsonResponse({'ok': False, 'result': 'user does not exist', 'user_id': user_id})
+
+
 
 
 def check_auth(request, authenticator):
