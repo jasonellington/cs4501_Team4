@@ -35,6 +35,12 @@ A new web front end page, the search result page, will be created. It will call 
 - As a user, I would like usability test and integration test to be checked by TravisCI
 - As a user, I would like load balance to be implemented using HAProxy
 
+## User Stories - Project 7 -
+- As a user, I would like the clicks to be logged to an access log
+- As a user, I would like Spark to reduce the access log to create a recommendation system
+- As a user, I would like the recommendation table to be in the database
+- As a user, I would like to see the recommendations when I go to a specific page
+
 
 ## Instructions:
 - Create an account by finding the register tab
